@@ -1,10 +1,11 @@
 package modelo;
 
 public class Usuario {
-	private String nombreUsuario;
+	private String username;
+	private String password;
 
-	public String getNombreUsuario() {
-		return nombreUsuario;
+	public String getUsername() {
+		return username;
 	}
 	
 }
