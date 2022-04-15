@@ -4,6 +4,7 @@ public class Empleado extends Usuario {
 	private String nya;
 	private String telefono;
 	private int edad;
+	private TicketEmpleo ticket;
 	
 	public Empleado(String username,String password,String nya, String telefono, int edad) {
 		super(username,password);
@@ -21,7 +22,10 @@ public class Empleado extends Usuario {
 	public int getEdad() {
 		return edad;
 	}
-	
-	
+
+	@Override
+	public void emiteFormulario(IAgencia agencia,Formulario f) {
+		this.ticket = agencia.recibeFormEmpleado(f);
+	}
 	
 }
