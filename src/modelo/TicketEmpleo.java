@@ -1,13 +1,12 @@
 package modelo;
 
-import java.util.Calendar;
-
 public class TicketEmpleo extends Ticket {
 	
 	private String resultado;
 
-	public TicketEmpleo(Formulario formulario, Calendar fecha, String estado) {
-		super(formulario, fecha, estado);
+	public TicketEmpleo(Formulario formulario) {
+		super(formulario);
+		this.resultado = "pendiente";
 	}
 
 	

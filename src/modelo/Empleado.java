@@ -22,6 +22,9 @@ public class Empleado extends Usuario {
 	public int getEdad() {
 		return edad;
 	}
+	public TicketEmpleo getTicket() {
+		return ticket;
+	}
 
 	@Override
 	public void emiteFormulario(IAgencia agencia,Formulario f) {

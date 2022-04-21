@@ -7,8 +7,8 @@ public class Empleador extends Usuario {
 	private String nombre;
 	private String tipoPersona;
 	private String rubro;
-	private int cantEmpSolicitados;
 	private ArrayList<TicketEmpleado> tickets = new ArrayList<TicketEmpleado>();
+	private ArrayList<Formulario> formularios = new ArrayList<Formulario>();
 	
 	public Empleador(String username, String password, String nombre, String tipoPersona, String rubro) {
 		super(username, password);
@@ -29,16 +29,25 @@ public class Empleador extends Usuario {
 		return rubro;
 	}
 	
-	// PREGUNTAR POR ESTA CHANCHADA
-	public Formulario creaFormulario(String locacion, double v1, double v2, String cargaHr, String puestoLaboral, int rangoEtario, String expPrevia, String estudios,int cantEmpSolicitados) {
-		this.cantEmpSolicitados = cantEmpSolicitados;
+	public void creaFormulario(String locacion, double v1, double v2, String cargaHr, String puestoLaboral, int rangoEtario, String expPrevia, String estudios) {
 		Formulario f = new Formulario(locacion,v1,v2,cargaHr,puestoLaboral,rangoEtario,expPrevia,estudios);
-		return f;
+		this.formularios.add(f);
 	}
 	
+	public ArrayList<TicketEmpleado> getTickets() {
+		return tickets;
+	}
+
 	@Override
 	public void emiteFormulario(IAgencia agencia,Formulario f) {
-		this.tickets.add(agencia.recibeFormEmpleador(f,this.cantEmpSolicitados));
+		this.tickets.add(agencia.recibeFormEmpleador(f));
+	}
+	
+	public void buscaEmpleados(IAgencia agencia, ArrayList<Formulario> formularios) {
+		int i;
+		for (i=0;i<formularios.size();i++)
+			this.emiteFormulario(agencia,formularios.get(i));
+		formularios.clear();
 	}
 	
 }

@@ -1,6 +1,6 @@
 package modelo;
 
 public interface IAgencia {
-	TicketEmpleado recibeFormEmpleador(Formulario f,int cantEmpSolicitados);
+	TicketEmpleado recibeFormEmpleador(Formulario f);
 	TicketEmpleo recibeFormEmpleado(Formulario f);
 }

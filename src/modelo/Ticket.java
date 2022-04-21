@@ -1,17 +1,18 @@
 package modelo;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public abstract class Ticket {
 	private Formulario formulario;
 	private Calendar fecha;
 	private String estado;
 	
-	public Ticket(Formulario formulario, Calendar fecha, String estado) {
+	public Ticket(Formulario formulario) {
 		super();
 		this.formulario = formulario;
-		this.fecha = fecha;
-		this.estado = estado;
+		this.estado = "activo";
+		this.fecha = GregorianCalendar.getInstance();
 	}
 	
 	public Formulario getFormulario() {
@@ -23,7 +24,5 @@ public abstract class Ticket {
 	public String getEstado() {
 		return estado;
 	}
-	
-	
 	
 }
