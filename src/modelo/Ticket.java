@@ -7,12 +7,14 @@ public abstract class Ticket {
 	private Formulario formulario;
 	private Calendar fecha;
 	private String estado;
+	private Peso peso;
 	
-	public Ticket(Formulario formulario) {
+	public Ticket(Formulario formulario, Peso peso) {
 		super();
 		this.formulario = formulario;
 		this.estado = "activo";
 		this.fecha = GregorianCalendar.getInstance();
+		this.peso = peso;
 	}
 	
 	public Formulario getFormulario() {
@@ -23,6 +25,10 @@ public abstract class Ticket {
 	}
 	public String getEstado() {
 		return estado;
+	}
+
+	public Peso getPeso() {
+		return peso;
 	}
 	
 }

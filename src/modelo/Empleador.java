@@ -9,6 +9,7 @@ public class Empleador extends Usuario {
 	private String rubro;
 	private ArrayList<TicketEmpleado> tickets = new ArrayList<TicketEmpleado>();
 	private ArrayList<Formulario> formularios = new ArrayList<Formulario>();
+	private ArrayList<Peso> pesos = new ArrayList<Peso>();
 	
 	public Empleador(String username, String password, String nombre, String tipoPersona, String rubro) {
 		super(username, password);
@@ -29,9 +30,10 @@ public class Empleador extends Usuario {
 		return rubro;
 	}
 	
-	public void creaFormulario(String locacion, double v1, double v2, String cargaHr, String puestoLaboral, int rangoEtario, String expPrevia, String estudios) {
-		Formulario f = new Formulario(locacion,v1,v2,cargaHr,puestoLaboral,rangoEtario,expPrevia,estudios);
+	public void creaFormulario(int locacion, int remuneracion, int cargaHr, int puestoLaboral, int rangoEtario, int expPrevia, int estudios,Peso peso) {
+		Formulario f = new Formulario(locacion,remuneracion,cargaHr,puestoLaboral,rangoEtario,expPrevia,estudios);
 		this.formularios.add(f);
+		this.pesos.add(peso);
 	}
 	
 	public ArrayList<TicketEmpleado> getTickets() {
@@ -39,14 +41,14 @@ public class Empleador extends Usuario {
 	}
 
 	@Override
-	public void emiteFormulario(IAgencia agencia,Formulario f) {
-		this.tickets.add(agencia.recibeFormEmpleador(f));
+	public void emiteFormulario(IAgencia agencia,Formulario f,Peso peso) {
+		this.tickets.add(agencia.recibeFormEmpleador(f,peso));
 	}
 	
 	public void buscaEmpleados(IAgencia agencia, ArrayList<Formulario> formularios) {
 		int i;
 		for (i=0;i<formularios.size();i++)
-			this.emiteFormulario(agencia,formularios.get(i));
+			this.emiteFormulario(agencia,formularios.get(i),pesos.get(i));
 		formularios.clear();
 	}
 	

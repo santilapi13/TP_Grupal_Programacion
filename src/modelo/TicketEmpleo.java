@@ -4,8 +4,8 @@ public class TicketEmpleo extends Ticket {
 	
 	private String resultado;
 
-	public TicketEmpleo(Formulario formulario) {
-		super(formulario);
+	public TicketEmpleo(Formulario formulario, Peso peso) {
+		super(formulario,peso);
 		this.resultado = "pendiente";
 	}
 

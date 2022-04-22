@@ -27,8 +27,8 @@ public class Empleado extends Usuario {
 	}
 
 	@Override
-	public void emiteFormulario(IAgencia agencia,Formulario f) {
-		this.ticket = agencia.recibeFormEmpleado(f);
+	public void emiteFormulario(IAgencia agencia,Formulario f,Peso peso) {
+		this.ticket = agencia.recibeFormEmpleado(f,peso);
 	}
 	
 }

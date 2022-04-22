@@ -1,19 +1,18 @@
 package modelo;
 
 public class Formulario {
-	private String locacion;
-	private double v1;
-	private double v2;
-	private String cargaHr;
-	private String puestoLaboral;
+	private int locacion;
+	private int remuneracion;
+	private int cargaHr;
+	private int puestoLaboral;
 	private int rangoEtario;	// (1:<40 ; 2: >40 & <50 ; 3:>50)
-	private String expPrevia;
-	private String estudios;
+	private int expPrevia;
+	private int estudios;
 	
-	public Formulario(String locacion, double v1, double v2, String cargaHr, String puestoLaboral, int rangoEtario, String expPrevia, String estudios) {
+	public Formulario(int locacion, int remuneracion, int cargaHr, int puestoLaboral, int rangoEtario, int expPrevia, int estudios) {
+		super();
 		this.locacion = locacion;
-		this.v1 = v1;
-		this.v2 = v2;
+		this.remuneracion = remuneracion;
 		this.cargaHr = cargaHr;
 		this.puestoLaboral = puestoLaboral;
 		this.rangoEtario = rangoEtario;
@@ -21,28 +20,31 @@ public class Formulario {
 		this.estudios = estudios;
 	}
 
-	public String getLocacion() {
+	public int getLocacion() {
 		return locacion;
 	}
-	public double getV1() {
-		return v1;
+
+	public int getRemuneracion() {
+		return remuneracion;
 	}
-	public double getV2() {
-		return v2;
-	}
-	public String getCargaHr() {
+
+	public int getCargaHr() {
 		return cargaHr;
 	}
-	public String getPuestoLaboral() {
+
+	public int getPuestoLaboral() {
 		return puestoLaboral;
 	}
+
 	public int getRangoEtario() {
 		return rangoEtario;
 	}
-	public String getExpPrevia() {
+
+	public int getExpPrevia() {
 		return expPrevia;
 	}
-	public String getEstudios() {
+
+	public int getEstudios() {
 		return estudios;
 	}
 	

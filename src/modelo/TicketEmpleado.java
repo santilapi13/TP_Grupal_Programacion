@@ -2,8 +2,8 @@ package modelo;
 
 public class TicketEmpleado extends Ticket {
 
-	public TicketEmpleado(Formulario formulario) {
-		super(formulario);
+	public TicketEmpleado(Formulario formulario, Peso peso) {
+		super(formulario,peso);
 	}
 
 }
