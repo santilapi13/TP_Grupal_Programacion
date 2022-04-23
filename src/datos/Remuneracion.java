@@ -21,6 +21,12 @@ public class Remuneracion extends Aspecto {
 		return t1.getPeso().getRemuneracion();
 	}
 
-
+	@Override
+	protected double calculaPuntaje(Ticket t1, Ticket t2, double peso, String perspectiva) {
+		int i, j;
+		i = t1.getFormulario().getRemuneracion();
+		j = t2.getFormulario().getRemuneracion();
+		return (perspectiva == "Empleador") ? (peso*this.matriz[i][j]) : (peso*this.matriz[j][i]);
+	}
 
 }

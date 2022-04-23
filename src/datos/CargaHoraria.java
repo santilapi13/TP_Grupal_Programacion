@@ -22,13 +22,10 @@ public class CargaHoraria extends Aspecto {
 	}
 
 	@Override
-	protected double calculaPuntaje(Ticket t1, Ticket t2, double peso) {	// hacer double dispatch pq fila = empleador y columna = empleado
+	protected double calculaPuntaje(Ticket t1, Ticket t2, double peso,String perspectiva) {	
 		int i,j;
 		i = t1.getFormulario().getCargaHr();	
 		j = t2.getFormulario().getCargaHr();
-		return peso*this.matriz[i][j];
+		return (perspectiva == "Empleador") ? (peso*this.matriz[i][j]) : (peso*this.matriz[j][i]);
 	}
-
-
-
 }

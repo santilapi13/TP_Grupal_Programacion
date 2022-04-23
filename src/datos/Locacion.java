@@ -21,4 +21,11 @@ public class Locacion extends Aspecto {
 		return t1.getPeso().getLocacion();
 	}
 
+	@Override
+	protected double calculaPuntaje(Ticket t1, Ticket t2, double peso, String perspectiva) {
+		int i, j;
+		i = t1.getFormulario().getLocacion();
+		j = t2.getFormulario().getLocacion();
+		return (perspectiva == "Empleador") ? (peso*this.matriz[i][j]) : (peso*this.matriz[j][i]);
+	}
 }

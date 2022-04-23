@@ -21,6 +21,12 @@ public class TipoPuesto extends Aspecto {
 		return t1.getPeso().getTipoPuesto();
 	}
 
-
+	@Override
+	protected double calculaPuntaje(Ticket t1, Ticket t2, double peso, String perspectiva) {
+		int i, j;
+		i = t1.getFormulario().getPuestoLaboral();
+		j = t2.getFormulario().getPuestoLaboral();
+		return (perspectiva == "Empleador") ? (peso*this.matriz[i][j]) : (peso*this.matriz[j][i]);
+	}
 
 }

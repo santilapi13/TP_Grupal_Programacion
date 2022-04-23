@@ -45,11 +45,11 @@ public class Empleador extends Usuario {
 		this.tickets.add(agencia.recibeFormEmpleador(f,peso));
 	}
 	
-	public void buscaEmpleados(IAgencia agencia, ArrayList<Formulario> formularios) {
+	public void buscaEmpleados(IAgencia agencia) {
 		int i;
-		for (i=0;i<formularios.size();i++)
-			this.emiteFormulario(agencia,formularios.get(i),pesos.get(i));
-		formularios.clear();
+		for (i=0;i<this.formularios.size();i++)
+			this.emiteFormulario(agencia,this.formularios.get(i),pesos.get(i));
+		this.formularios.clear();
 	}
 	
 }

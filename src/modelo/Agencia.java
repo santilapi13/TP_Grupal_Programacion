@@ -49,7 +49,7 @@ public class Agencia implements IAgencia {
 		return ticket;
 	}
 	
-	private double calculaPuntEntrevista(Ticket t1,Ticket t2) {		// Singleton + Template
+	private double calculaPuntEntrevista(Ticket t1,Ticket t2,String perspectiva) {		// Singleton + Template
 		double puntaje = 0;
 		Locacion loc = Locacion.getInstance();
 		Remuneracion rem = Remuneracion.getInstance();
@@ -58,13 +58,13 @@ public class Agencia implements IAgencia {
 		RangoEtario rgEt = RangoEtario.getInstance();
 		ExpPrevia exp = ExpPrevia.getInstance();
 		EstudiosCursados estC = EstudiosCursados.getInstance();
-		puntaje += loc.calculaPuntAspecto(t1,t2);
-		puntaje += rem.calculaPuntAspecto(t1,t2);
-		puntaje += ch.calculaPuntAspecto(t1,t2);
-		puntaje += tp.calculaPuntAspecto(t1,t2);
-		puntaje += rgEt.calculaPuntAspecto(t1,t2);
-		puntaje += exp.calculaPuntAspecto(t1,t2);
-		puntaje += estC.calculaPuntAspecto(t1,t2);
+		puntaje += loc.calculaPuntAspecto(t1,t2,perspectiva);
+		puntaje += rem.calculaPuntAspecto(t1,t2,perspectiva);
+		puntaje += ch.calculaPuntAspecto(t1,t2,perspectiva);
+		puntaje += tp.calculaPuntAspecto(t1,t2,perspectiva);
+		puntaje += rgEt.calculaPuntAspecto(t1,t2,perspectiva);
+		puntaje += exp.calculaPuntAspecto(t1,t2,perspectiva);
+		puntaje += estC.calculaPuntAspecto(t1,t2,perspectiva);
 		return puntaje;
 	}
 	
@@ -73,7 +73,7 @@ public class Agencia implements IAgencia {
 		double puntajeAct;
 		for (Empleador empleadorAct : this.empleadores) {
 			for (TicketEmpleado ticketEmpleado : empleadorAct.getTickets()) {
-				puntajeAct = this.calculaPuntEntrevista(empAct.getTicket(),ticketEmpleado);
+				puntajeAct = this.calculaPuntEntrevista(empAct.getTicket(),ticketEmpleado,"Empleado");
 				if (puntajeAct > 0 && !lista.ticketRepetido(ticketEmpleado))
 					lista.getUsuarios().add(new ElemLA(empleadorAct,puntajeAct,ticketEmpleado));
 			}
@@ -86,7 +86,7 @@ public class Agencia implements IAgencia {
 		double puntajeAct;
 		for (Empleado empleadoAct : this.empleados) {
 			for (TicketEmpleado ticketAct : emprAct.getTickets()) {
-				puntajeAct = this.calculaPuntEntrevista(ticketAct,empleadoAct.getTicket());
+				puntajeAct = this.calculaPuntEntrevista(ticketAct,empleadoAct.getTicket(),"Empleador");
 				if (puntajeAct > 0 && !lista.ticketRepetido(ticketAct))
 					lista.getUsuarios().add(new ElemLA(empleadoAct,puntajeAct,ticketAct));
 			}

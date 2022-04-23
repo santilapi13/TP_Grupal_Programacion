@@ -9,6 +9,7 @@ public abstract class Usuario implements IUsuario {
 	public Usuario(String username, String password) {
 		this.username = username;
 		this.password = password;
+		this.listaAsignacion = new ListaAsignacion();
 	}
 
 	public String getUsername() {
