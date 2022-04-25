@@ -19,6 +19,10 @@ public abstract class Usuario implements IUsuario {
 	public double getPuntajeApp() {
 		return puntajeApp;
 	}
+	
+	public void incrPuntajeApp(double incr) {
+		this.puntajeApp += incr;
+	}
 
 	public void setPassword(String password) {
 		this.password = password;
@@ -38,9 +42,7 @@ public abstract class Usuario implements IUsuario {
 
 	@Override
 	public String toString() {
-		return "username: " + username + ", password: " + password + ", puntajeApp: " + puntajeApp + ", listaAsignacion: " + listaAsignacion;
+		return "username: " + username + "\npuntajeApp: " + puntajeApp;
 	}
-	
-	
 	
 }

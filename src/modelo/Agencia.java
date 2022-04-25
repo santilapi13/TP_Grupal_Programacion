@@ -1,6 +1,7 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import datos.CargaHoraria;
 import datos.EstudiosCursados;
@@ -74,7 +75,7 @@ public class Agencia implements IAgencia {
 		for (Empleador empleadorAct : this.empleadores) {
 			for (TicketEmpleado ticketEmpleado : empleadorAct.getTickets()) {
 				puntajeAct = this.calculaPuntEntrevista(empAct.getTicket(),ticketEmpleado,"Empleado");
-				if (puntajeAct > 0 && !lista.ticketRepetido(ticketEmpleado))
+				if (puntajeAct > 0 && !lista.ticketRepetido(ticketEmpleado,empleadorAct))
 					lista.getUsuarios().add(new ElemLA(empleadorAct,puntajeAct,ticketEmpleado));
 			}
 		}
@@ -87,8 +88,8 @@ public class Agencia implements IAgencia {
 		for (Empleado empleadoAct : this.empleados) {
 			for (TicketEmpleado ticketAct : emprAct.getTickets()) {
 				puntajeAct = this.calculaPuntEntrevista(ticketAct,empleadoAct.getTicket(),"Empleador");
-				if (puntajeAct > 0 && !lista.ticketRepetido(ticketAct))
-					lista.getUsuarios().add(new ElemLA(empleadoAct,puntajeAct,ticketAct));
+				if (puntajeAct > 0 && !lista.ticketRepetido(empleadoAct.getTicket(),empleadoAct)) 
+					lista.getUsuarios().add(new ElemLA(empleadoAct,puntajeAct,empleadoAct.getTicket()));
 			}
 		}
 		return lista;
@@ -105,6 +106,30 @@ public class Agencia implements IAgencia {
 		for (i=0;i<this.empleadores.size();i++) {
 			emprAct = empleadores.get(i);
 			emprAct.setListaAsignacion(this.creaLAEmpleadores(emprAct));
+		}
+		this.actualizaPuntajes();
+	}
+	
+	private void actualizaPuntajes() {
+		int i;
+		Empleado empAct;
+		Empleador emprAct;
+		for (i=0;i<this.empleados.size();i++) {
+			empAct = empleados.get(i);
+			try {
+				empAct.getListaAsignacion().getUsuarios().first().getUsuario().incrPuntajeApp(10);
+			} catch (NoSuchElementException e) {
+				System.out.println("No se puede actualizar puntaje porque no hay empleadores en la lista de asignacion de " + empAct.getUsername());
+			}
+		}
+		for (i=0;i<this.empleadores.size();i++) {
+			emprAct = empleadores.get(i);
+			try {
+				emprAct.getListaAsignacion().getUsuarios().first().getUsuario().incrPuntajeApp(5);
+				emprAct.getListaAsignacion().getUsuarios().last().getUsuario().incrPuntajeApp(-5);
+			} catch(NoSuchElementException e) {
+				System.out.println("No se puede actualizar puntaje porque no hay empleados en la lista de asignacion de " + emprAct.getUsername());
+			}
 		}
 	}
 	

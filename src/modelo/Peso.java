@@ -75,5 +75,12 @@ public class Peso {
 	public void setEstudiosCursados(double estudiosCursados) {
 		EstudiosCursados = estudiosCursados;
 	}
+
+	@Override
+	public String toString() {
+		return "Locacion: " + Locacion + ", Remuneracion: " + Remuneracion + ", CargaHoraria: " + CargaHoraria
+				+ ", TipoPuesto: " + TipoPuesto + ", RangoEtario: " + RangoEtario + ", ExpPrevia: " + ExpPrevia
+				+ ", EstudiosCursados: " + EstudiosCursados;
+	}
 	
 }

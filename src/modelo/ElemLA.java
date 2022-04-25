@@ -33,12 +33,14 @@ public class ElemLA implements Comparable<ElemLA> {
 		else if (this.puntEntrevista<o.getPuntEntrevista()) {    
 			resultado = 1;      
 		}
+		else if (this.puntEntrevista == o.getPuntEntrevista())
+			resultado = 1;
 		return resultado;
 	}
 
 	@Override
 	public String toString() {
-		return usuario + ", puntaje: " + puntEntrevista + "\n";
+		return "username: " + usuario.getUsername() + ", puntaje: " + puntEntrevista;
 	}
 
 	

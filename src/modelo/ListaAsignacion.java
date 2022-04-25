@@ -22,15 +22,20 @@ public class ListaAsignacion {
 		return usuarios;
 	}
 	
-	public boolean ticketRepetido(Ticket ticket) {
+	public boolean ticketRepetido(Ticket ticket, Usuario usuario) {
 		boolean esta = false;
 		ElemLA elemAct;
 		Iterator<ElemLA> iterator = this.usuarios.iterator();
 		while (iterator.hasNext() && !esta) {
 			elemAct= iterator.next();
-			esta = ticket.getFormulario().equals(elemAct.getTicket().getFormulario());
+			esta = ticket.getFormulario().equals(elemAct.getTicket().getFormulario()) && elemAct.getUsuario() == usuario;
 		}
 		return esta;
+	}
+
+	@Override
+	public String toString() {
+		return "\n\tfecha: " + fecha.getTime() +"\n";
 	}
 	
 }

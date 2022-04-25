@@ -26,6 +26,17 @@ public class Empleado extends Usuario {
 		return ticket;
 	}
 
+	public Formulario creaFormulario(int locacion,int remuneracion,int cargaHr,int puestoLaboral,int expPrevia,int estudios) {
+		int rangoEtario;
+		if (this.edad < 40)
+			rangoEtario = 0;
+		else if (this.edad < 50)
+			rangoEtario = 1;
+		else
+			rangoEtario = 2;
+		return new Formulario(locacion,remuneracion,cargaHr,puestoLaboral,rangoEtario,expPrevia,estudios);
+	}
+	
 	@Override
 	public void emiteFormulario(IAgencia agencia,Formulario f,Peso peso) {
 		this.ticket = agencia.recibeFormEmpleado(f,peso);

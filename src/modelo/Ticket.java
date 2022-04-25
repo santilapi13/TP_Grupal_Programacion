@@ -30,5 +30,11 @@ public abstract class Ticket {
 	public Peso getPeso() {
 		return peso;
 	}
+
+	@Override
+	public String toString() {
+		return "fecha: " + fecha.getTime() + ", estado: " + estado + "\npeso: " + peso;
+	}
+	
 	
 }
