@@ -5,14 +5,23 @@ public class Empleado extends Usuario {
 	private String telefono;
 	private int edad;
 	private TicketEmpleo ticket;
+	private Ticket ticketElegido;
 	
 	public Empleado(String username,String password,String nya, String telefono, int edad) {
 		super(username,password);
 		this.nya = nya;
 		this.telefono = telefono;
 		this.edad = edad;
+		this.ticketElegido = null;
 	}
-
+	
+	
+	public Ticket getTicketElegido() {
+		return ticketElegido;
+	}
+	public void setTicketElegido(Ticket eleccion) {
+		this.ticketElegido = eleccion;
+	}
 	public String getNya() {
 		return nya;
 	}

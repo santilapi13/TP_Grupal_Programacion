@@ -14,13 +14,16 @@ import datos.remuneracion;
 import datos.tipoPuesto;
 
 public class Agencia implements IAgencia {
+	private double fondos;
 	private static Agencia instance = null;
 	private ArrayList<Empleado> empleados = new ArrayList<Empleado>();
 	private ArrayList<Empleador> empleadores = new ArrayList<Empleador>();
 	private ArrayList<ElemRE> eleccionesEmpleadores = new ArrayList<ElemRE>();
 	private Map<String,ElemRE> eleccionesEmpleados = new HashMap<String,ElemRE>();
+	private ArrayList<Contrato> contratos = new ArrayList<Contrato>();
 	
 	private Agencia() {
+		this.fondos = 0;
 	}
 	
 	public static Agencia getInstance() {
@@ -28,7 +31,16 @@ public class Agencia implements IAgencia {
 			instance = new Agencia();
 		return instance;
 	}
-
+	
+	public ArrayList<Contrato> getContratos() {
+		return contratos;
+	}
+	public void incrFondos(double incr) {
+		this.fondos += incr;
+	}
+	public double getFondos() {
+		return fondos;
+	}
 	public ArrayList<Empleado> getEmpleados() {
 		return empleados;
 	}
@@ -36,6 +48,16 @@ public class Agencia implements IAgencia {
 		return empleadores;
 	}
 	
+	
+	
+	public ArrayList<ElemRE> getEleccionesEmpleadores() {
+		return eleccionesEmpleadores;
+	}
+
+	public Map<String, ElemRE> getEleccionesEmpleados() {
+		return eleccionesEmpleados;
+	}
+
 	public void addEmpleado(Empleado e) {	// Excepcion para que no hayan mismos nros de usuario etc
 		this.empleados.add(e);
 	}
@@ -138,9 +160,24 @@ public class Agencia implements IAgencia {
 	}
 	
 	public void iniciaRondaElecciones() {
-		
+		Empleador empleadorElegido;
+		int i;
+		for (Empleado empleadoAct : this.empleados) {	// Carga hashmap con las elecciones de los empleados
+			i = 0;
+			while (i<this.empleadores.size() && !this.empleadores.get(i).getTickets().contains(empleadoAct.getTicketElegido()))
+				i++;
+			empleadorElegido = this.empleadores.get(i);
+			ElemRE elemAct = new ElemRE(empleadoAct,empleadorElegido,empleadorElegido.getTickets().indexOf(empleadoAct.getTicketElegido()));
+			this.eleccionesEmpleados.put(elemAct.getUsuarioActual().getUsername(), elemAct);
+		}
+		for (Empleador empleadorAct : this.empleadores) {	// Carga arraylist con las elecciones de los empleadores
+			for (i=0;i<empleadorAct.getEmpleadosElegidos().size();i++) {
+				ElemRE elemAct = new ElemRE(empleadorAct,empleadorAct.getEmpleadosElegidos().get(i),empleadorAct.getTickets().indexOf(empleadorAct.getTicketsAsignados().get(i)));	// arraylists paralelos
+				this.eleccionesEmpleadores.add(elemAct);
+			}
+		}
 		boolean fueElegido = false;
-		for (Empleador empleadorAct : this.empleadores) {
+		for (Empleador empleadorAct : this.empleadores) {	// Se fija si algun empleador no fue elegido para penalizar su puntaje
 			for (Map.Entry<String,ElemRE> entry : this.eleccionesEmpleados.entrySet()) {
 				fueElegido = empleadorAct == entry.getValue().getUsuarioElegido();
 				if (fueElegido)
@@ -163,7 +200,13 @@ public class Agencia implements IAgencia {
 			empleadoAct = (Empleado) eleccionEmpleado.getUsuarioActual();
 			i = eleccionEmpleador.getIndiceTicket();
 			ticketEmpleado = empleadorAct.getTickets().get(i);
+			while (i < empleadorAct.getTickets().size() && empleadorAct.getTickets().get(i).getEstado().equalsIgnoreCase("finalizado") && ticketEmpleado.equals(empleadorAct.getTickets().get(i))) {
+				i++;
+			}
+			ticketEmpleado = empleadorAct.getTickets().get(i);
+			System.out.println("Verificando: " + empleadorAct.getUsername() + " y " + empleadoAct.getUsername());
 			if (this.matcheoContratacion(ticketEmpleado,empleadoAct,empleadorAct,eleccionEmpleado)) {
+				this.contratos.add(new Contrato(empleadoAct,empleadorAct));
 				ticketEmpleado.setEstado("finalizado");
 				empleadorAct.incrPuntajeApp(5);			// Redefinimos que en vez de 50, como 1 ticket equivale a 1 empleado contratado, se sume solo 5
 				empleadoAct.getTicket().setEstado("finalizado");
@@ -171,10 +214,18 @@ public class Agencia implements IAgencia {
 				empleadoAct.incrPuntajeApp(10);
 			}
 		}
+		this.iniciaCalculoComisiones();
 	}
 	
 	private boolean matcheoContratacion(TicketEmpleado ticketEmpleado,Empleado empleadoAct,Empleador empleadorAct,ElemRE eleccionEmpleado) {
-		return ticketEmpleado.getEstado() == "activo" && empleadoAct.getTicket().getEstado() == "activo" && empleadorAct == eleccionEmpleado.getUsuarioElegido() && ticketEmpleado.equals(empleadorAct.getTickets().get(eleccionEmpleado.getIndiceTicket()));
+		System.out.println(ticketEmpleado.getEstado().equalsIgnoreCase("activo") && empleadoAct.getTicket().getEstado().equalsIgnoreCase("activo"));
+		System.out.println(empleadorAct == eleccionEmpleado.getUsuarioElegido());
+		System.out.println(ticketEmpleado.equals(empleadorAct.getTickets().get(eleccionEmpleado.getIndiceTicket())));
+		return ticketEmpleado.getEstado().equalsIgnoreCase("activo") && empleadoAct.getTicket().getEstado().equalsIgnoreCase("activo") && empleadorAct == eleccionEmpleado.getUsuarioElegido() && ticketEmpleado.equals(empleadorAct.getTickets().get(eleccionEmpleado.getIndiceTicket()));
+	}
+	
+	private void iniciaCalculoComisiones() {
+		
 	}
 	
 }

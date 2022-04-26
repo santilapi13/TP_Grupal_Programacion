@@ -22,5 +22,10 @@ public class ElemRE {
 		return indiceTicket;
 	}
 
+	@Override
+	public String toString() {
+		return usuarioActual + "\teligio a\t" + usuarioElegido + ", indiceTicket: " + indiceTicket;
+	}
+
 	
 }

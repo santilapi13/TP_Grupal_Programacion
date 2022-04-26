@@ -42,7 +42,7 @@ public abstract class Usuario implements IUsuario {
 
 	@Override
 	public String toString() {
-		return "username: " + username + "\npuntajeApp: " + puntajeApp;
+		return "username: " + username + ", puntajeApp: " + puntajeApp;
 	}
 	
 }

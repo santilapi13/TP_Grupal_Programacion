@@ -10,12 +10,26 @@ public class Empleador extends Usuario {
 	private ArrayList<TicketEmpleado> tickets = new ArrayList<TicketEmpleado>();
 	private ArrayList<Formulario> formularios = new ArrayList<Formulario>();
 	private ArrayList<Peso> pesos = new ArrayList<Peso>();
+	private ArrayList<Empleado> empleadosElegidos = new ArrayList<Empleado>();
+	private ArrayList<TicketEmpleado> ticketsAsignados = new ArrayList<TicketEmpleado>();
 	
 	public Empleador(String username, String password, String nombre, String tipoPersona, String rubro) {
 		super(username, password);
 		this.nombre = nombre;
 		this.tipoPersona = tipoPersona;
 		this.rubro = rubro;
+	}
+	
+	public void eligeEmpleado(Empleado empleado,TicketEmpleado ticket) {
+		this.empleadosElegidos.add(empleado);
+		this.ticketsAsignados.add(ticket);
+	}
+	
+	public ArrayList<TicketEmpleado> getTicketsAsignados() {
+		return ticketsAsignados;
+	}
+	public ArrayList<Empleado> getEmpleadosElegidos() {
+		return empleadosElegidos;
 	}
 
 	public String getNombre() {

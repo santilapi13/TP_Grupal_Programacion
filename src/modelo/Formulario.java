@@ -2,10 +2,10 @@ package modelo;
 
 public class Formulario {
 	private int locacion;
-	private int remuneracion;
+	private int remuneracion;	// 0: <50k ; 1: >50k && <100k ; 2: >100k
 	private int cargaHr;
 	private int puestoLaboral;
-	private int rangoEtario;	// (0:<40 ; 1: >40 & <50 ; 2:>50)
+	private int rangoEtario;	// (0:<40 ; 1: >40 && <50 ; 2:>50)
 	private int expPrevia;
 	private int estudios;
 	
