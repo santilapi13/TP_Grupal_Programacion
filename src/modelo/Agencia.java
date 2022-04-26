@@ -1,20 +1,24 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
-import datos.CargaHoraria;
-import datos.EstudiosCursados;
-import datos.ExpPrevia;
-import datos.Locacion;
-import datos.RangoEtario;
-import datos.Remuneracion;
-import datos.TipoPuesto;
+import datos.cargaHoraria;
+import datos.estudiosCursados;
+import datos.expPrevia;
+import datos.locacion;
+import datos.rangoEtario;
+import datos.remuneracion;
+import datos.tipoPuesto;
 
 public class Agencia implements IAgencia {
 	private static Agencia instance = null;
 	private ArrayList<Empleado> empleados = new ArrayList<Empleado>();
 	private ArrayList<Empleador> empleadores = new ArrayList<Empleador>();
+	private ArrayList<ElemRE> eleccionesEmpleadores = new ArrayList<ElemRE>();
+	private Map<String,ElemRE> eleccionesEmpleados = new HashMap<String,ElemRE>();
 	
 	private Agencia() {
 	}
@@ -52,13 +56,13 @@ public class Agencia implements IAgencia {
 	
 	private double calculaPuntEntrevista(Ticket t1,Ticket t2,String perspectiva) {		// Singleton + Template
 		double puntaje = 0;
-		Locacion loc = Locacion.getInstance();
-		Remuneracion rem = Remuneracion.getInstance();
-		CargaHoraria ch = CargaHoraria.getInstance();
-		TipoPuesto tp = TipoPuesto.getInstance();
-		RangoEtario rgEt = RangoEtario.getInstance();
-		ExpPrevia exp = ExpPrevia.getInstance();
-		EstudiosCursados estC = EstudiosCursados.getInstance();
+		locacion loc = locacion.getInstance();
+		remuneracion rem = remuneracion.getInstance();
+		cargaHoraria ch = cargaHoraria.getInstance();
+		tipoPuesto tp = tipoPuesto.getInstance();
+		rangoEtario rgEt = rangoEtario.getInstance();
+		expPrevia exp = expPrevia.getInstance();
+		estudiosCursados estC = estudiosCursados.getInstance();
 		puntaje += loc.calculaPuntAspecto(t1,t2,perspectiva);
 		puntaje += rem.calculaPuntAspecto(t1,t2,perspectiva);
 		puntaje += ch.calculaPuntAspecto(t1,t2,perspectiva);
@@ -131,6 +135,46 @@ public class Agencia implements IAgencia {
 				System.out.println("No se puede actualizar puntaje porque no hay empleados en la lista de asignacion de " + emprAct.getUsername());
 			}
 		}
+	}
+	
+	public void iniciaRondaElecciones() {
+		
+		boolean fueElegido = false;
+		for (Empleador empleadorAct : this.empleadores) {
+			for (Map.Entry<String,ElemRE> entry : this.eleccionesEmpleados.entrySet()) {
+				fueElegido = empleadorAct == entry.getValue().getUsuarioElegido();
+				if (fueElegido)
+					break;
+			}
+			if (!fueElegido)
+				empleadorAct.incrPuntajeApp(-20);
+		}
+	}
+	
+	public void iniciaRondaContrataciones() {
+		ElemRE eleccionEmpleado;
+		Empleador empleadorAct;
+		Empleado empleadoAct;
+		TicketEmpleado ticketEmpleado;
+		int i;
+		for (ElemRE eleccionEmpleador : this.eleccionesEmpleadores) {
+			eleccionEmpleado = this.eleccionesEmpleados.get(eleccionEmpleador.getUsuarioElegido().getUsername());
+			empleadorAct = (Empleador) eleccionEmpleador.getUsuarioActual();
+			empleadoAct = (Empleado) eleccionEmpleado.getUsuarioActual();
+			i = eleccionEmpleador.getIndiceTicket();
+			ticketEmpleado = empleadorAct.getTickets().get(i);
+			if (this.matcheoContratacion(ticketEmpleado,empleadoAct,empleadorAct,eleccionEmpleado)) {
+				ticketEmpleado.setEstado("finalizado");
+				empleadorAct.incrPuntajeApp(5);			// Redefinimos que en vez de 50, como 1 ticket equivale a 1 empleado contratado, se sume solo 5
+				empleadoAct.getTicket().setEstado("finalizado");
+				empleadoAct.getTicket().setResultado("exito");
+				empleadoAct.incrPuntajeApp(10);
+			}
+		}
+	}
+	
+	private boolean matcheoContratacion(TicketEmpleado ticketEmpleado,Empleado empleadoAct,Empleador empleadorAct,ElemRE eleccionEmpleado) {
+		return ticketEmpleado.getEstado() == "activo" && empleadoAct.getTicket().getEstado() == "activo" && empleadorAct == eleccionEmpleado.getUsuarioElegido() && ticketEmpleado.equals(empleadorAct.getTickets().get(eleccionEmpleado.getIndiceTicket()));
 	}
 	
 }

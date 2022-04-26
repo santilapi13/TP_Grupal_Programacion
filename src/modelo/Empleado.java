@@ -42,4 +42,9 @@ public class Empleado extends Usuario {
 		this.ticket = agencia.recibeFormEmpleado(f,peso);
 	}
 	
+	public void cancelaTicket() {
+		this.ticket.setEstado("cancelado");
+		this.incrPuntajeApp(-1);
+	}
+	
 }

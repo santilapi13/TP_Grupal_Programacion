@@ -2,18 +2,18 @@ package datos;
 
 import modelo.Ticket;
 
-public class ExpPrevia extends Aspecto {
+public class expPrevia extends Aspecto {
 
-	private static ExpPrevia instance= null;
+	private static expPrevia instance= null;
 	private double [][] matriz = {{1,1.5,2},{-0.5,1,1.5}, {-2,-1.5,1}};
 
-	private ExpPrevia() {
+	private expPrevia() {
 	}
 
-	public static ExpPrevia getInstance() {
+	public static expPrevia getInstance() {
 	    if(instance==null)
-	        ExpPrevia.instance=new ExpPrevia();
-	    return ExpPrevia.instance;
+	        expPrevia.instance=new expPrevia();
+	    return expPrevia.instance;
 	}
 
 	@Override

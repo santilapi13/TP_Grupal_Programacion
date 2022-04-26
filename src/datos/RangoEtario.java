@@ -2,18 +2,18 @@ package datos;
 
 import modelo.Ticket;
 
-public class RangoEtario extends Aspecto {
+public class rangoEtario extends Aspecto {
 
-	private static RangoEtario instance= null;
+	private static rangoEtario instance= null;
 	private double [][] matriz = {{1,-0.5,-1},{-0.5,1,-0.5}, {-1,0.5,1}};
 
-	private RangoEtario() {
+	private rangoEtario() {
 	}
 
-	public static RangoEtario getInstance() {
+	public static rangoEtario getInstance() {
 	    if(instance==null)
-	        RangoEtario.instance=new RangoEtario();
-	    return RangoEtario.instance;
+	        rangoEtario.instance=new rangoEtario();
+	    return rangoEtario.instance;
 	}
 
 	@Override

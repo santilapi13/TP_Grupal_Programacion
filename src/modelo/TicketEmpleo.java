@@ -16,6 +16,5 @@ public class TicketEmpleo extends Ticket {
 	public String getResultado() {
 		return resultado;
 	}
-
 	
 }

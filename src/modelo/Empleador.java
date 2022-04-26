@@ -52,4 +52,8 @@ public class Empleador extends Usuario {
 		this.formularios.clear();
 	}
 	
+	public void cancelaTicket(int i) {
+		this.tickets.get(i).setEstado("cancelado");
+	}
+	
 }

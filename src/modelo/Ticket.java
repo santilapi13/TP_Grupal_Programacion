@@ -27,6 +27,10 @@ public abstract class Ticket {
 		return estado;
 	}
 
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
 	public Peso getPeso() {
 		return peso;
 	}
@@ -35,6 +39,13 @@ public abstract class Ticket {
 	public String toString() {
 		return "fecha: " + fecha.getTime() + ", estado: " + estado + "\npeso: " + peso;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		Ticket t = (Ticket) obj;
+		return t.getFormulario().equals(this.formulario) && t.getPeso().equals(this.peso);
+	}
+	
 	
 	
 }

@@ -2,85 +2,93 @@ package modelo;
 
 public class Peso {
 	
-	private double Locacion;
-	private double Remuneracion;
-	private double CargaHoraria;
-	private double TipoPuesto;
-	private double RangoEtario;
-	private double ExpPrevia;
-	private double EstudiosCursados;
+	private double locacion;
+	private double remuneracion;
+	private double cargaHoraria;
+	private double tipoPuesto;
+	private double rangoEtario;
+	private double expPrevia;
+	private double estudiosCursados;
 	
 	public Peso(double locacion, double remuneracion, double cargaHoraria, double tipoPuesto, double rangoEtario, double expPrevia, double estudiosCursados) {
-		Locacion = locacion;
-		Remuneracion = remuneracion;
-		CargaHoraria = cargaHoraria;
-		TipoPuesto = tipoPuesto;
-		RangoEtario = rangoEtario;
-		ExpPrevia = expPrevia;
-		EstudiosCursados = estudiosCursados;
+		this.locacion = locacion;
+		this.remuneracion = remuneracion;
+		this.cargaHoraria = cargaHoraria;
+		this.tipoPuesto = tipoPuesto;
+		this.rangoEtario = rangoEtario;
+		this.expPrevia = expPrevia;
+		this.estudiosCursados = estudiosCursados;
 	}
 
 	public double getLocacion() {
-		return Locacion;
+		return locacion;
 	}
 
 	public double getRemuneracion() {
-		return Remuneracion;
+		return remuneracion;
 	}
 
 	public double getCargaHoraria() {
-		return CargaHoraria;
+		return cargaHoraria;
 	}
 
 	public double getTipoPuesto() {
-		return TipoPuesto;
+		return tipoPuesto;
 	}
 
 	public double getRangoEtario() {
-		return RangoEtario;
+		return rangoEtario;
 	}
 
 	public double getExpPrevia() {
-		return ExpPrevia;
+		return expPrevia;
 	}
 
 	public double getEstudiosCursados() {
-		return EstudiosCursados;
+		return estudiosCursados;
 	}
 
 	public void setLocacion(double locacion) {
-		Locacion = locacion;
+		this.locacion = locacion;
 	}
 
 	public void setRemuneracion(double remuneracion) {
-		Remuneracion = remuneracion;
+		this.remuneracion = remuneracion;
 	}
 
 	public void setCargaHoraria(double cargaHoraria) {
-		CargaHoraria = cargaHoraria;
+		this.cargaHoraria = cargaHoraria;
 	}
 
 	public void setTipoPuesto(double tipoPuesto) {
-		TipoPuesto = tipoPuesto;
+		this.tipoPuesto = tipoPuesto;
 	}
 
 	public void setRangoEtario(double rangoEtario) {
-		RangoEtario = rangoEtario;
+		this.rangoEtario = rangoEtario;
 	}
 
 	public void setExpPrevia(double expPrevia) {
-		ExpPrevia = expPrevia;
+		this.expPrevia = expPrevia;
 	}
 
 	public void setEstudiosCursados(double estudiosCursados) {
-		EstudiosCursados = estudiosCursados;
+		this.estudiosCursados = estudiosCursados;
 	}
 
 	@Override
 	public String toString() {
-		return "Locacion: " + Locacion + ", Remuneracion: " + Remuneracion + ", CargaHoraria: " + CargaHoraria
-				+ ", TipoPuesto: " + TipoPuesto + ", RangoEtario: " + RangoEtario + ", ExpPrevia: " + ExpPrevia
-				+ ", EstudiosCursados: " + EstudiosCursados;
+		return "Locacion: " + locacion + ", Remuneracion: " + remuneracion + ", CargaHoraria: " + cargaHoraria
+				+ ", TipoPuesto: " + tipoPuesto + ", RangoEtario: " + rangoEtario + ", ExpPrevia: " + expPrevia
+				+ ", EstudiosCursados: " + estudiosCursados;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		Peso p = (Peso) obj;
+		return this.cargaHoraria == p.getCargaHoraria() && this.locacion == p.getLocacion() && this.remuneracion == p.getRemuneracion() && this.tipoPuesto == p.getTipoPuesto() && this.rangoEtario == p.getRangoEtario() && this.expPrevia == p.getExpPrevia() && this.estudiosCursados == p.getEstudiosCursados();
+	}
+	
+	
 	
 }

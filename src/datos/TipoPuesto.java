@@ -2,18 +2,18 @@ package datos;
 
 import modelo.Ticket;
 
-public class TipoPuesto extends Aspecto {
+public class tipoPuesto extends Aspecto {
 
-	private static TipoPuesto instance= null;
+	private static tipoPuesto instance= null;
 	private double [][] matriz = {{1,-0.5,-1},{-0.5,1,-0.5}, {-1,0.5,1}};
 
-	private TipoPuesto() {
+	private tipoPuesto() {
 	}
 
-	public static TipoPuesto getInstance() {
+	public static tipoPuesto getInstance() {
 	    if(instance==null)
-	        TipoPuesto.instance=new TipoPuesto();
-	    return TipoPuesto.instance;
+	        tipoPuesto.instance=new tipoPuesto();
+	    return tipoPuesto.instance;
 	}
 
 	@Override

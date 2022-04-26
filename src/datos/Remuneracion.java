@@ -2,18 +2,18 @@ package datos;
 
 import modelo.Ticket;
 
-public class Remuneracion extends Aspecto {
+public class remuneracion extends Aspecto {
 
-	private static Remuneracion instance= null;
+	private static remuneracion instance= null;
 	private double [][] matriz = {{1,-0.5,-1},{1,1,-0.5}, {1,1,1}};
 
-	private Remuneracion() {
+	private remuneracion() {
 	}
 
-	public static Remuneracion getInstance() {
+	public static remuneracion getInstance() {
 	    if(instance==null)
-	        Remuneracion.instance=new Remuneracion();
-	    return Remuneracion.instance;
+	        remuneracion.instance=new remuneracion();
+	    return remuneracion.instance;
 	}
 
 	@Override
