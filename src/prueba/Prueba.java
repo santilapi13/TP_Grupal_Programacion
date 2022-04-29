@@ -34,9 +34,9 @@ public class Prueba {
 			e1.emiteFormulario(agencia, e1.creaFormulario(0,2,0,1,1,2) , new Peso(1,1,1,1,1,1,1));
 			e2.emiteFormulario(agencia, e2.creaFormulario(0,0,2,2,1,2) , new Peso(1,1,1,1,1,1,1));
 
-			er1.creaFormulario(0, 1, 0, 1, 0, 1, 2, new Peso(1,1,1,1,1,1,1));
-			er1.creaFormulario(0,1,0,1,0,1,2,new Peso(1,1,1,1,1,1,1));
-			er1.creaFormulario(0,2,0,1,0,1,2,new Peso(1,1,1,1,1,1,1));
+			er1.creaFormulario(0,1,0,1,0,1,2, new Peso(1,1,1,1,1,1,1));		// indice 0
+			er1.creaFormulario(0,1,0,1,0,1,2,new Peso(1,1,1,1,1,1,1));		// indice 1
+			//er1.creaFormulario(0,2,0,1,0,1,2,new Peso(1,1,1,1,1,1,1)); 		// indice 2
 			er1.buscaEmpleados(agencia);
 			er2.creaFormulario(0, 1, 0, 1, 0, 1, 2, new Peso(1,1,1,1,1,1,1));
 			er2.buscaEmpleados(agencia);

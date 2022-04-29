@@ -204,7 +204,6 @@ public class Agencia implements IAgencia {
 				i++;
 			}
 			ticketEmpleado = empleadorAct.getTickets().get(i);
-			System.out.println("Verificando: " + empleadorAct.getUsername() + " y " + empleadoAct.getUsername());
 			if (this.matcheoContratacion(ticketEmpleado,empleadoAct,empleadorAct,eleccionEmpleado)) {
 				this.contratos.add(new Contrato(empleadoAct,empleadorAct));
 				ticketEmpleado.setEstado("finalizado");
@@ -218,9 +217,6 @@ public class Agencia implements IAgencia {
 	}
 	
 	private boolean matcheoContratacion(TicketEmpleado ticketEmpleado,Empleado empleadoAct,Empleador empleadorAct,ElemRE eleccionEmpleado) {
-		System.out.println(ticketEmpleado.getEstado().equalsIgnoreCase("activo") && empleadoAct.getTicket().getEstado().equalsIgnoreCase("activo"));
-		System.out.println(empleadorAct == eleccionEmpleado.getUsuarioElegido());
-		System.out.println(ticketEmpleado.equals(empleadorAct.getTickets().get(eleccionEmpleado.getIndiceTicket())));
 		return ticketEmpleado.getEstado().equalsIgnoreCase("activo") && empleadoAct.getTicket().getEstado().equalsIgnoreCase("activo") && empleadorAct == eleccionEmpleado.getUsuarioElegido() && ticketEmpleado.equals(empleadorAct.getTickets().get(eleccionEmpleado.getIndiceTicket()));
 	}
 	
