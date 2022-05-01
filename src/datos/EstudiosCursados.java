@@ -2,18 +2,18 @@ package datos;
 
 import modelo.Ticket;
 
-public class estudiosCursados extends Aspecto {
+public class EstudiosCursados extends Aspecto {
 
-	private static estudiosCursados instance = null;
+	private static EstudiosCursados instance = null;
 	private double[][] matriz = { { 1, 1.5, 2 }, { -0.5, 1, 1.5 }, { -2, -1.5, 1 } };
 
-	private estudiosCursados() {
+	private EstudiosCursados() {
 	}
 
-	public static estudiosCursados getInstance() {
+	public static EstudiosCursados getInstance() {
 		if (instance == null)
-			estudiosCursados.instance = new estudiosCursados();
-		return estudiosCursados.instance;
+			EstudiosCursados.instance = new EstudiosCursados();
+		return EstudiosCursados.instance;
 	}
 
 	@Override

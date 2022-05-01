@@ -6,13 +6,13 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import datos.Comisiones;
-import datos.cargaHoraria;
-import datos.estudiosCursados;
-import datos.expPrevia;
-import datos.locacion;
-import datos.rangoEtario;
-import datos.remuneracion;
-import datos.tipoPuesto;
+import datos.CargaHoraria;
+import datos.EstudiosCursados;
+import datos.ExpPrevia;
+import datos.Locacion;
+import datos.RangoEtario;
+import datos.Remuneracion;
+import datos.TipoPuesto;
 import excepciones.UsuarioRepetidoException;
 
 public class Agencia implements IAgencia {
@@ -80,13 +80,13 @@ public class Agencia implements IAgencia {
 	
 	private double calculaPuntEntrevista(Ticket t1,Ticket t2,String perspectiva) {		// Singleton + Template
 		double puntaje = 0;
-		locacion loc = locacion.getInstance();
-		remuneracion rem = remuneracion.getInstance();
-		cargaHoraria ch = cargaHoraria.getInstance();
-		tipoPuesto tp = tipoPuesto.getInstance();
-		rangoEtario rgEt = rangoEtario.getInstance();
-		expPrevia exp = expPrevia.getInstance();
-		estudiosCursados estC = estudiosCursados.getInstance();
+		Locacion loc = Locacion.getInstance();
+		Remuneracion rem = Remuneracion.getInstance();
+		CargaHoraria ch = CargaHoraria.getInstance();
+		TipoPuesto tp = TipoPuesto.getInstance();
+		RangoEtario rgEt = RangoEtario.getInstance();
+		ExpPrevia exp = ExpPrevia.getInstance();
+		EstudiosCursados estC = EstudiosCursados.getInstance();
 		puntaje += loc.calculaPuntAspecto(t1,t2,perspectiva);
 		puntaje += rem.calculaPuntAspecto(t1,t2,perspectiva);
 		puntaje += ch.calculaPuntAspecto(t1,t2,perspectiva);

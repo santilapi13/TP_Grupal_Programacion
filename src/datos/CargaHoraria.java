@@ -2,18 +2,18 @@ package datos;
 
 import modelo.Ticket;
 
-public class cargaHoraria extends Aspecto {
+public class CargaHoraria extends Aspecto {
 
-	private static cargaHoraria instance= null;
+	private static CargaHoraria instance= null;
 	private double [][] matriz = {{1,-0.5,-1},{-0.5,1,-0.5}, {-1,0.5,1}};
 
-	private cargaHoraria() {
+	private CargaHoraria() {
 	}
 
-	public static cargaHoraria getInstance() {
+	public static CargaHoraria getInstance() {
 	    if(instance==null)
-	        cargaHoraria.instance=new cargaHoraria();
-	    return cargaHoraria.instance;
+	        CargaHoraria.instance=new CargaHoraria();
+	    return CargaHoraria.instance;
 	}
 
 	@Override

@@ -2,18 +2,18 @@ package datos;
 
 import modelo.Ticket;
 
-public class locacion extends Aspecto {
+public class Locacion extends Aspecto {
 
-	private static locacion instance= null;
+	private static Locacion instance= null;
 	private double [][] matriz = {{1,-1,0.5},{-1,1,0.5}, {0.5,0.5,1}};
 	
-	private locacion() {
+	private Locacion() {
 	}
 
-	public static locacion getInstance() {
+	public static Locacion getInstance() {
 	    if(instance==null)
-	        locacion.instance=new locacion();
-	    return locacion.instance;
+	        Locacion.instance=new Locacion();
+	    return Locacion.instance;
 	}
 
 	@Override
