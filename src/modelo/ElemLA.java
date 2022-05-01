@@ -2,11 +2,11 @@ package modelo;
 
 public class ElemLA implements Comparable<ElemLA> {
 	
-	private Usuario usuario;
+	private NoAdmin usuario;
 	private double puntEntrevista;
 	private Ticket ticket;
 
-	public ElemLA(Usuario usuario, double puntaje, Ticket ticket) {
+	public ElemLA(NoAdmin usuario, double puntaje, Ticket ticket) {
 		this.usuario = usuario;
 		this.puntEntrevista = puntaje;
 		this.ticket = ticket;
@@ -16,7 +16,7 @@ public class ElemLA implements Comparable<ElemLA> {
 		return ticket;
 	}
 
-	public Usuario getUsuario() {
+	public NoAdmin getUsuario() {
 		return usuario;
 	}
 

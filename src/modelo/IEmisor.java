@@ -1,5 +1,5 @@
 package modelo;
 
-public interface IUsuario {
+public interface IEmisor {
 	void emiteFormulario(IAgencia agencia,Formulario f,Peso peso);
 }

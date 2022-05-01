@@ -22,7 +22,7 @@ public class ListaAsignacion {
 		return usuarios;
 	}
 	
-	public boolean ticketRepetido(Ticket ticket, Usuario usuario) {
+	public boolean ticketRepetido(Ticket ticket, NoAdmin usuario) {
 		boolean esta = false;
 		ElemLA elemAct;
 		Iterator<ElemLA> iterator = this.usuarios.iterator();

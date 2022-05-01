@@ -2,20 +2,20 @@ package modelo;
 
 public class ElemRE {
 
-	private Usuario usuarioActual;
-	private Usuario usuarioElegido;
+	private NoAdmin usuarioActual;
+	private NoAdmin usuarioElegido;
 	private int indiceTicket;	// Si esta en arrayList de empleadores, indica el ticket de esa eleccion. Si esta en hashMap de empleados, indica ticket del empleador elegido.
 	
-	public ElemRE(Usuario usuarioActual, Usuario usuarioElegido, int indiceTicket) {
+	public ElemRE(NoAdmin usuarioActual, NoAdmin usuarioElegido, int indiceTicket) {
 		this.usuarioActual = usuarioActual;
 		this.usuarioElegido = usuarioElegido;
 		this.indiceTicket = indiceTicket;
 	}
 
-	public Usuario getUsuarioActual() {
+	public NoAdmin getUsuarioActual() {
 		return usuarioActual;
 	}
-	public Usuario getUsuarioElegido() {
+	public NoAdmin getUsuarioElegido() {
 		return usuarioElegido;
 	}
 	public int getIndiceTicket() {

@@ -1,5 +1,7 @@
 package modelo;
 
+import excepciones.PesoInvalidoException;
+
 public class Peso {
 	
 	private double locacion;
@@ -10,7 +12,9 @@ public class Peso {
 	private double expPrevia;
 	private double estudiosCursados;
 	
-	public Peso(double locacion, double remuneracion, double cargaHoraria, double tipoPuesto, double rangoEtario, double expPrevia, double estudiosCursados) {
+	public Peso(double locacion, double remuneracion, double cargaHoraria, double tipoPuesto, double rangoEtario, double expPrevia, double estudiosCursados) throws PesoInvalidoException{
+		if (locacion < 0 || locacion > 1 || remuneracion < 0 || remuneracion > 1 || cargaHoraria < 0 || cargaHoraria > 1 || tipoPuesto < 0 || tipoPuesto > 1 || rangoEtario < 0 || rangoEtario > 1 || expPrevia < 0 || expPrevia > 1 || estudiosCursados < 0 || estudiosCursados > 1 )
+			throw new PesoInvalidoException("Cada peso ingresado debe tener un valor entre 0 y 1");
 		this.locacion = locacion;
 		this.remuneracion = remuneracion;
 		this.cargaHoraria = cargaHoraria;

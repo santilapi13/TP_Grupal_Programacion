@@ -1,6 +1,6 @@
 package modelo;
 
-public class Empleado extends Usuario {
+public class Empleado extends NoAdmin {
 	private String nya;
 	private String telefono;
 	private int edad;

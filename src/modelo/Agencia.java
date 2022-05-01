@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import datos.Comisiones;
 import datos.cargaHoraria;
 import datos.estudiosCursados;
 import datos.expPrevia;
@@ -12,9 +13,10 @@ import datos.locacion;
 import datos.rangoEtario;
 import datos.remuneracion;
 import datos.tipoPuesto;
+import excepciones.UsuarioRepetidoException;
 
 public class Agencia implements IAgencia {
-	private double fondos;
+	private double fondos;					// fondos representa la suma de las comisiones que deben cada usuario
 	private static Agencia instance = null;
 	private ArrayList<Empleado> empleados = new ArrayList<Empleado>();
 	private ArrayList<Empleador> empleadores = new ArrayList<Empleador>();
@@ -35,9 +37,7 @@ public class Agencia implements IAgencia {
 	public ArrayList<Contrato> getContratos() {
 		return contratos;
 	}
-	public void incrFondos(double incr) {
-		this.fondos += incr;
-	}
+
 	public double getFondos() {
 		return fondos;
 	}
@@ -47,22 +47,24 @@ public class Agencia implements IAgencia {
 	public ArrayList<Empleador> getEmpleadores() {
 		return empleadores;
 	}
-	
-	
-	
 	public ArrayList<ElemRE> getEleccionesEmpleadores() {
 		return eleccionesEmpleadores;
 	}
-
 	public Map<String, ElemRE> getEleccionesEmpleados() {
 		return eleccionesEmpleados;
 	}
 
-	public void addEmpleado(Empleado e) {	// Excepcion para que no hayan mismos nros de usuario etc
+	public void addEmpleado(Empleado e) throws UsuarioRepetidoException {
+		for (Empleado empAct : this.empleados)					// Estamos admitiendo que haya un empleado y empleador con igual username 
+			if (empAct.getUsername().equals(e.getUsername()))
+				throw new UsuarioRepetidoException("El nombre del nuevo empleado ya existe");
 		this.empleados.add(e);
 	}
 	
-	public void addEmpleador(Empleador e) {	// Excepcion para que no hayan mismos nros de usuario etc
+	public void addEmpleador(Empleador e) throws UsuarioRepetidoException {	
+		for (Empleador empAct : this.empleadores)					// Estamos admitiendo que haya un empleado y empleador con igual username 
+			if (empAct.getUsername().equals(e.getUsername()))
+				throw new UsuarioRepetidoException("El nombre del nuevo empleador ya existe");
 		this.empleadores.add(e);
 	}
 	
@@ -193,6 +195,7 @@ public class Agencia implements IAgencia {
 		Empleador empleadorAct;
 		Empleado empleadoAct;
 		TicketEmpleado ticketEmpleado;
+		Contrato contrato;
 		int i;
 		for (ElemRE eleccionEmpleador : this.eleccionesEmpleadores) {
 			eleccionEmpleado = this.eleccionesEmpleados.get(eleccionEmpleador.getUsuarioElegido().getUsername());
@@ -205,23 +208,41 @@ public class Agencia implements IAgencia {
 			}
 			ticketEmpleado = empleadorAct.getTickets().get(i);
 			if (this.matcheoContratacion(ticketEmpleado,empleadoAct,empleadorAct,eleccionEmpleado)) {
-				this.contratos.add(new Contrato(empleadoAct,empleadorAct));
+				contrato = new Contrato(empleadoAct,empleadorAct);
+				this.contratos.add(contrato);
 				ticketEmpleado.setEstado("finalizado");
 				empleadorAct.incrPuntajeApp(5);			// Redefinimos que en vez de 50, como 1 ticket equivale a 1 empleado contratado, se sume solo 5
 				empleadoAct.getTicket().setEstado("finalizado");
 				empleadoAct.getTicket().setResultado("exito");
 				empleadoAct.incrPuntajeApp(10);
+				this.fondos += this.calculaComision(contrato,eleccionEmpleado.getIndiceTicket());
 			}
 		}
-		this.iniciaCalculoComisiones();
 	}
 	
 	private boolean matcheoContratacion(TicketEmpleado ticketEmpleado,Empleado empleadoAct,Empleador empleadorAct,ElemRE eleccionEmpleado) {
 		return ticketEmpleado.getEstado().equalsIgnoreCase("activo") && empleadoAct.getTicket().getEstado().equalsIgnoreCase("activo") && empleadorAct == eleccionEmpleado.getUsuarioElegido() && ticketEmpleado.equals(empleadorAct.getTickets().get(eleccionEmpleado.getIndiceTicket()));
 	}
 	
-	private void iniciaCalculoComisiones() {
-		
+	private double calculaComision(Contrato contrato,int i) {		// El porcentaje se calcula sobre valores fijos en base a los rangos de remuneracion establecidos en su formulario
+		Empleador empleador = contrato.getEmpleador();
+		Empleado empleado = contrato.getEmpleado();
+		double tasaEmpleador = Comisiones.calculaTasa(empleador.getTipoPersona(),empleador.getRubro(),empleador.getPuntajeApp());
+		double tasaEmpleado = Comisiones.calculaTasa(empleado.getTicket().getFormulario().getPuestoLaboral(),empleado.getPuntajeApp());
+		double sueldo = 0;
+		switch (empleador.getTickets().get(i).getFormulario().getRemuneracion()) {
+			case 0: sueldo = 25000;		// promedio entre 0 y 50.000	
+		break;
+			case 1: sueldo = 75000;		// promedio entre 50.000 y 100.000
+		break;
+			case 2: sueldo = 125000; 	// valor fijo correspondiente a "mas de 100.000"
+		break;
+		}
+		double comisionEmpleado = sueldo*tasaEmpleado;
+		double comisionEmpleador = sueldo*tasaEmpleador;
+		empleado.agregaComision(comisionEmpleado);
+		empleador.agregaComision(comisionEmpleador);
+		return comisionEmpleado + comisionEmpleador;
 	}
 	
 }

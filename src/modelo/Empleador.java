@@ -2,18 +2,18 @@ package modelo;
 
 import java.util.ArrayList;
 
-public class Empleador extends Usuario {
+public class Empleador extends NoAdmin {
 
 	private String nombre;
-	private String tipoPersona;
-	private String rubro;
+	private int tipoPersona;		// 0: Fisica ; 1: Juridica
+	private int rubro;			// 0: Salud ; 1: Comercio Local ; 2: Comercio Internacional
 	private ArrayList<TicketEmpleado> tickets = new ArrayList<TicketEmpleado>();
 	private ArrayList<Formulario> formularios = new ArrayList<Formulario>();
 	private ArrayList<Peso> pesos = new ArrayList<Peso>();
 	private ArrayList<Empleado> empleadosElegidos = new ArrayList<Empleado>();
 	private ArrayList<TicketEmpleado> ticketsAsignados = new ArrayList<TicketEmpleado>();
 	
-	public Empleador(String username, String password, String nombre, String tipoPersona, String rubro) {
+	public Empleador(String username, String password, String nombre, int tipoPersona, int rubro) {
 		super(username, password);
 		this.nombre = nombre;
 		this.tipoPersona = tipoPersona;
@@ -36,11 +36,11 @@ public class Empleador extends Usuario {
 		return nombre;
 	}
 
-	public String getTipoPersona() {
+	public int getTipoPersona() {
 		return tipoPersona;
 	}
 
-	public String getRubro() {
+	public int getRubro() {
 		return rubro;
 	}
 	

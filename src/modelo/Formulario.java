@@ -1,13 +1,13 @@
 package modelo;
 
 public class Formulario {
-	private int locacion;
+	private int locacion;		// 0: home office ; 1: presencial ; 2: indistinta
 	private int remuneracion;	// 0: <50k ; 1: >50k && <100k ; 2: >100k
-	private int cargaHr;
-	private int puestoLaboral;
+	private int cargaHr;		// 0: media ; 1: completa ; 2: extendida
+	private int puestoLaboral;	// 0: junior ; 1: senior ; 2: gerencial
 	private int rangoEtario;	// (0:<40 ; 1: >40 && <50 ; 2:>50)
-	private int expPrevia;
-	private int estudios;
+	private int expPrevia;		// 0: nada ; 1: media ; 2: mucha
+	private int estudios;		// 0: primario ; 1: secundario ; 2: terciario
 	
 	public Formulario(int locacion, int remuneracion, int cargaHr, int puestoLaboral, int rangoEtario, int expPrevia, int estudios) {
 		super();
