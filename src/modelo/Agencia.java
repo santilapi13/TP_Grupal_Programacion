@@ -15,6 +15,14 @@ import datos.Remuneracion;
 import datos.TipoPuesto;
 import excepciones.UsuarioRepetidoException;
 
+/**
+ * @author USUARIO
+ *
+ */
+/**
+ * @author USUARIO
+ *
+ */
 public class Agencia implements IAgencia {
 	private double fondos;					// fondos representa la suma de las comisiones que deben cada usuario
 	private static Agencia instance = null;
@@ -54,13 +62,29 @@ public class Agencia implements IAgencia {
 		return eleccionesEmpleados;
 	}
 
+	/**
+	 * Agrega el empleado ya instanciado a la lista de empleados de la agencia. <br>
+	 * <b>Pre</b>: El parametro e debe ser distinto de null. La lista de empleados debe estar inicializada. <br>
+	 * <b>Post</b>: El empleado estara en la lista empleados. <br>
+	 * @param e : Empleado que se desea agregar a la lista.
+	 * @throws UsuarioRepetidoException : Evita que el empleado se agregue a la lista si su username ya esta siendo usado por otro empleado.
+	 */
 	public void addEmpleado(Empleado e) throws UsuarioRepetidoException {
-		for (Empleado empAct : this.empleados)					// Estamos admitiendo que haya un empleado y empleador con igual username 
+		for (Empleado empAct : this.empleados) {					// Estamos admitiendo que haya un empleado y empleador con igual username
 			if (empAct.getUsername().equals(e.getUsername()))
 				throw new UsuarioRepetidoException("El nombre del nuevo empleado ya existe");
+		}
 		this.empleados.add(e);
 	}
 	
+	
+	/**
+	 * Agrega el empleador ya instanciado a la lista de empleadores de la agencia. <br>
+	 * <b>Pre</b>: El parametro e debe ser distinto de null. La lista de empleadores debe estar inicializada. <br>
+	 * <b>Post</b>: El empleador estara en la lista empleadores. <br>
+	 * @param e : Empleador que se desea agregar a la lista.
+	 * @throws UsuarioRepetidoException : Evita que el empleador se agregue a la lista si su username ya esta siendo usado por otro empleador.
+	 */
 	public void addEmpleador(Empleador e) throws UsuarioRepetidoException {	
 		for (Empleador empAct : this.empleadores)					// Estamos admitiendo que haya un empleado y empleador con igual username 
 			if (empAct.getUsername().equals(e.getUsername()))
@@ -68,16 +92,41 @@ public class Agencia implements IAgencia {
 		this.empleadores.add(e);
 	}
 	
-	public TicketEmpleo recibeFormEmpleado(Formulario f,Peso peso) {
+	/**
+	 * Genera el ticket de empleo a partir del formulario pasado por un empleado y sus pesos mediante el patron de diseño Double Dispatch.<br>
+	 * <b>Pre</b>: Formulario y peso deben ser distintos de null.<br>
+	 * <b>Post</b>: El empleado que lo emitio debe recibir correctamente el ticket retornado por este metodo.<br>
+	 * @param f : Formulario con la preferencia del empleado sobre varios aspectos que afectara al calculo de las coincidencias.<br>
+	 * @param peso : Tiene el peso correspondiente a cada uno de los aspectos, segun la preferencia del empleado.<br> 
+	 * @return Ticket de empleo con la informacion correspondiente al formulario f y al peso pasados por parametro.
+	 */
+	public TicketEmpleo recibeFormEmpleado(Formulario f,Peso peso) {	// double dispatch
 		TicketEmpleo ticket = new TicketEmpleo(f,peso);
 		return ticket;
 	}
 	
-	public TicketEmpleado recibeFormEmpleador(Formulario f,Peso peso) {
+	/**
+	 * Genera el ticket de empleado a partir del formulario pasado por un empleador y sus pesos mediante el patron de diseño Double Dispatch.<br>
+	 * <b>Pre</b>: Formulario y peso deben ser distintos de null.<br>
+	 * <b>Post</b>: El empleador que lo emitio debe recibir correctamente el ticket retornado por este metodo.<br>
+	 * @param f : Formulario con la preferencia del empleador sobre varios aspectos que afectara al calculo de las coincidencias.<br>
+	 * @param peso : Tiene el peso correspondiente a cada uno de los aspectos, segun la preferencia del empleador.<br> 
+	 * @return Ticket de empleado con la informacion correspondiente al formulario f y al peso pasados por parametro.
+	 */
+	public TicketEmpleado recibeFormEmpleador(Formulario f,Peso peso) {		
 		TicketEmpleado ticket = new TicketEmpleado(f,peso);
 		return ticket;
 	}
 	
+	/**
+	 * Calcula el puntaje de las coincidencias entre los tickets de un empleador y un empleado como la suma del puntaje de coincidencia de cada aspecto. Para ello se utilizaron instancias de clases a las que se le aplico el Patron Singleton.<br>
+	 * <b>Pre</b>: t1 y t2 deben ser distintos de null. t1 debe ser el ticket desde el cual se "toma perspectiva". Perspectiva contendra las palabras "Empleado" o "Empleador".<br>
+	 * <b>Post</b>: puntaje representara la suma de los puntajes de coincidencia de cada aspecto considerado desde la perspectiva del propietario de t1.<br>
+	 * @param t1 : Ticket del usuario cuyo puntaje de coincidencia va a ser calculado en base a sus pesos.<br>
+	 * @param t2 : Ticket del usuario con el cual se busca coincidir t1.<br>
+	 * @param perspectiva : String con la palabra Empleado o Empleador segun corresponda, que sirve para que los metodos que lo invocan puedan distinguir el tipo de usuario del propietario de t1.<br>
+	 * @return valor double con el puntaje de coincidencia de la entrevista entre el empleado y el empleador.
+	 */
 	private double calculaPuntEntrevista(Ticket t1,Ticket t2,String perspectiva) {		// Singleton + Template
 		double puntaje = 0;
 		Locacion loc = Locacion.getInstance();
@@ -97,6 +146,13 @@ public class Agencia implements IAgencia {
 		return puntaje;
 	}
 	
+	/**
+	 * Crea una nueva Lista de Asignacion, ordenada segun puntaje de coincidencia, de los empleadores que mas coincidan con las preferencias del empleador pasado por parametro.<br>
+	 * <b>Pre</b>: empAct debe ser distinto de null y debe haber emitido un ticket (lo tiene como atributo).
+	 * <b>
+	 * @param empAct : Empleado al cual se le generara su lista de asignacion a partir de todos los empleadores disponibles.<br>
+	 * @return Lista de Asignacion correspondiente al empleado pasado por parametro.
+	 */
 	private ListaAsignacion creaLAEmpleado(Empleado empAct) {	// Lista de asignacion de empleadores compatibles con el empleado
 		ListaAsignacion lista = new ListaAsignacion();
 		double puntajeAct;
