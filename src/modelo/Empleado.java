@@ -5,7 +5,7 @@ public class Empleado extends NoAdmin {
 	private String telefono;
 	private int edad;
 	private TicketEmpleo ticket;
-	private Ticket ticketElegido;
+	private TicketEmpleado ticketElegido;
 	
 	public Empleado(String username,String password,String nya, String telefono, int edad) {
 		super(username,password);
@@ -19,7 +19,7 @@ public class Empleado extends NoAdmin {
 	public Ticket getTicketElegido() {
 		return ticketElegido;
 	}
-	public void setTicketElegido(Ticket eleccion) {
+	public void setTicketElegido(TicketEmpleado eleccion) {
 		this.ticketElegido = eleccion;
 	}
 	public String getNya() {

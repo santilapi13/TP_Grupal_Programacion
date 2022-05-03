@@ -12,6 +12,7 @@ import modelo.ElemRE;
 import modelo.Empleado;
 import modelo.Empleador;
 import modelo.Peso;
+import modelo.TicketEmpleado;
 
 public class Prueba {
 
@@ -63,8 +64,8 @@ public class Prueba {
 			for (ElemLA l : er2.getListaAsignacion().getUsuarios())
 				System.out.println(l);
 			
-			e1.setTicketElegido(e1.getListaAsignacion().getUsuarios().first().getTicket());
-			e2.setTicketElegido(e2.getListaAsignacion().getUsuarios().first().getTicket());
+			e1.setTicketElegido((TicketEmpleado) e1.getListaAsignacion().getUsuarios().first().getTicket());
+			e2.setTicketElegido((TicketEmpleado) e2.getListaAsignacion().getUsuarios().first().getTicket());
 			er1.eligeEmpleado(e1,er1.getTickets().get(0));
 			er1.eligeEmpleado(e2,er1.getTickets().get(1));
 			
