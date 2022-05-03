@@ -2,8 +2,15 @@ package modelo;
 
 public class ElemRE {
 
-	private NoAdmin usuarioActual;
-	private NoAdmin usuarioElegido;
+    /**
+     * @aggregation shared
+     */
+    private NoAdmin usuarioActual;
+
+    /**
+     * @aggregation shared
+     */
+    private NoAdmin usuarioElegido;
 	private int indiceTicket;	// Si esta en arrayList de empleadores, indica el ticket de esa eleccion. Si esta en hashMap de empleados, indica ticket del empleador elegido.
 	
 	public ElemRE(NoAdmin usuarioActual, NoAdmin usuarioElegido, int indiceTicket) {

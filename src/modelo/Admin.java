@@ -3,8 +3,11 @@ package modelo;
 import java.util.ArrayList;
 
 public class Admin extends Usuario {
-	
-	private Agencia agencia = Agencia.getInstance();
+
+    /**
+     * @aggregation shared
+     */
+    private Agencia agencia = Agencia.getInstance();
 
 	public Admin(String username, String password) {
 		super(username, password);

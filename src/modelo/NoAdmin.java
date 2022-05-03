@@ -2,7 +2,11 @@ package modelo;
 
 public abstract class NoAdmin extends Usuario implements IEmisor {
 	private double puntajeApp;
-	private ListaAsignacion listaAsignacion;
+
+    /**
+     * @aggregation composite
+     */
+    private ListaAsignacion listaAsignacion;
 	private double comisionAPagar;
 	
 	public NoAdmin(String username, String password) {

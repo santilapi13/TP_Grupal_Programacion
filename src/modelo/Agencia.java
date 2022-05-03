@@ -26,11 +26,31 @@ import excepciones.UsuarioRepetidoException;
 public class Agencia implements IAgencia {
 	private double fondos;					// fondos representa la suma de las comisiones que deben cada usuario
 	private static Agencia instance = null;
-	private ArrayList<Empleado> empleadosDisp = new ArrayList<Empleado>();
-	private ArrayList<Empleador> empleadoresDisp = new ArrayList<Empleador>();
-	private ArrayList<Empleado> empleados = new ArrayList<Empleado>();
-	private ArrayList<Empleador> empleadores = new ArrayList<Empleador>();
-	private ArrayList<ElemRE> eleccionesEmpleadores = new ArrayList<ElemRE>();
+
+    /**
+     * @aggregation shared
+     */
+    private ArrayList<Empleado> empleadosDisp = new ArrayList<Empleado>();
+
+    /**
+     * @aggregation shared
+     */
+    private ArrayList<Empleador> empleadoresDisp = new ArrayList<Empleador>();
+
+    /**
+     * @aggregation composite
+     */
+    private ArrayList<Empleado> empleados = new ArrayList<Empleado>();
+
+    /**
+     * @aggregation composite
+     */
+    private ArrayList<Empleador> empleadores = new ArrayList<Empleador>();
+
+    /**
+     * @aggregation composite
+     */
+    private ArrayList<ElemRE> eleccionesEmpleadores = new ArrayList<ElemRE>();
 	private Map<String,ElemRE> eleccionesEmpleados = new HashMap<String,ElemRE>();
 	private ArrayList<Contrato> contratos = new ArrayList<Contrato>();
 	

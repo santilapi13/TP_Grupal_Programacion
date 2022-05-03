@@ -1,10 +1,17 @@
 package modelo;
 
 public class ElemLA implements Comparable<ElemLA> {
-	
-	private NoAdmin usuario;
+
+    /**
+     * @aggregation shared
+     */
+    private NoAdmin usuario;
 	private double puntEntrevista;
-	private Ticket ticket;
+
+    /**
+     * @aggregation shared
+     */
+    private Ticket ticket;
 
 	public ElemLA(NoAdmin usuario, double puntaje, Ticket ticket) {
 		this.usuario = usuario;

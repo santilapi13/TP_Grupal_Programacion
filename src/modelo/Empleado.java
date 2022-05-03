@@ -4,8 +4,16 @@ public class Empleado extends NoAdmin {
 	private String nya;
 	private String telefono;
 	private int edad;
-	private TicketEmpleo ticket;
-	private TicketEmpleado ticketElegido;
+
+    /**
+     * @aggregation composite
+     */
+    private TicketEmpleo ticket;
+
+    /**
+     * @aggregation shared
+     */
+    private TicketEmpleado ticketElegido;
 	
 	public Empleado(String username,String password,String nya, String telefono, int edad) {
 		super(username,password);

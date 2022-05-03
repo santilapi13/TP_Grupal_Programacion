@@ -7,8 +7,11 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class ListaAsignacion {
-	
-	private SortedSet<ElemLA> usuarios = new TreeSet<ElemLA>();
+
+    /**
+     * @aggregation composite
+     */
+    private SortedSet<ElemLA> usuarios = new TreeSet<ElemLA>();
 	private Calendar fecha;
 
 	public ListaAsignacion() {

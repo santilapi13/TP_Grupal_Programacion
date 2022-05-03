@@ -4,10 +4,17 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public abstract class Ticket {
-	private Formulario formulario;
+    /**
+     * @aggregation composite
+     */
+    private Formulario formulario;
 	private Calendar fecha;
 	private String estado;
-	private Peso peso;
+
+    /**
+     * @aggregation composite
+     */
+    private Peso peso;
 	
 	public Ticket(Formulario formulario, Peso peso) {
 		super();
