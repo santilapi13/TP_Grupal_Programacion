@@ -23,8 +23,8 @@ public class Prueba {
 			agencia.addEmpleado(e1);
 			Empleado e2 = new Empleado("lauluna","lau123","Lautaro Luna","223897563",21);
 			agencia.addEmpleado(e2);
-			//Empleado e3 = new Empleado("lauluna2","lau123","Lautaro Luna","223897563",21);
-			//agencia.addEmpleado(e3);
+			Empleado e3 = new Empleado("lauluna2","lau123","Lautaro Luna","223897563",21);
+			agencia.addEmpleado(e3);
 			Empleador er1 = new Empleador("santilapi SA", "contraseña", "Santiago Lapiana", 1, 0);
 			agencia.addEmpleador(er1);
 			Empleador er2 = new Empleador("wencho SRL", "contraseña2", "Wenceslao Avalos", 0, 2);

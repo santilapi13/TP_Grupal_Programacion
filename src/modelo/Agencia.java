@@ -26,6 +26,8 @@ import excepciones.UsuarioRepetidoException;
 public class Agencia implements IAgencia {
 	private double fondos;					// fondos representa la suma de las comisiones que deben cada usuario
 	private static Agencia instance = null;
+	private ArrayList<Empleado> empleadosDisp = new ArrayList<Empleado>();
+	private ArrayList<Empleador> empleadoresDisp = new ArrayList<Empleador>();
 	private ArrayList<Empleado> empleados = new ArrayList<Empleado>();
 	private ArrayList<Empleador> empleadores = new ArrayList<Empleador>();
 	private ArrayList<ElemRE> eleccionesEmpleadores = new ArrayList<ElemRE>();
@@ -49,17 +51,23 @@ public class Agencia implements IAgencia {
 	public double getFondos() {
 		return fondos;
 	}
-	public ArrayList<Empleado> getEmpleados() {
-		return empleados;
+	public ArrayList<Empleado> getEmpleadosDisp() {
+		return empleadosDisp;
 	}
-	public ArrayList<Empleador> getEmpleadores() {
-		return empleadores;
+	public ArrayList<Empleador> getEmpleadoresDisp() {
+		return empleadoresDisp;
 	}
 	public ArrayList<ElemRE> getEleccionesEmpleadores() {
 		return eleccionesEmpleadores;
 	}
 	public Map<String, ElemRE> getEleccionesEmpleados() {
 		return eleccionesEmpleados;
+	}
+	public ArrayList<Empleado> getEmpleados() {
+		return empleados;
+	}
+	public ArrayList<Empleador> getEmpleadores() {
+		return empleadores;
 	}
 
 	/**
@@ -156,7 +164,7 @@ public class Agencia implements IAgencia {
 	private ListaAsignacion creaLAEmpleado(Empleado empAct) {	// Lista de asignacion de empleadores compatibles con el empleado
 		ListaAsignacion lista = new ListaAsignacion();
 		double puntajeAct;
-		for (Empleador empleadorAct : this.empleadores) {
+		for (Empleador empleadorAct : this.empleadoresDisp) {
 			for (TicketEmpleado ticketEmpleado : empleadorAct.getTickets()) {
 				puntajeAct = this.calculaPuntEntrevista(empAct.getTicket(),ticketEmpleado,"Empleado");
 				if (puntajeAct > 0 && !lista.ticketRepetido(ticketEmpleado,empleadorAct))
@@ -169,7 +177,7 @@ public class Agencia implements IAgencia {
 	private ListaAsignacion creaLAEmpleadores(Empleador emprAct) {	// Lista de asignacion de empleados compatibles con el empleador
 		ListaAsignacion lista = new ListaAsignacion();
 		double puntajeAct;
-		for (Empleado empleadoAct : this.empleados) {
+		for (Empleado empleadoAct : this.empleadosDisp) {
 			for (TicketEmpleado ticketAct : emprAct.getTickets()) {
 				puntajeAct = this.calculaPuntEntrevista(ticketAct,empleadoAct.getTicket(),"Empleador");
 				if (puntajeAct > 0 && !lista.ticketRepetido(empleadoAct.getTicket(),empleadoAct)) 
@@ -183,31 +191,49 @@ public class Agencia implements IAgencia {
 		int i;
 		Empleado empAct;
 		Empleador emprAct;
-		for (i=0;i<this.empleados.size();i++) {
-			empAct = empleados.get(i);
+		this.cargaDisponibles();
+		for (i=0;i<this.empleadosDisp.size();i++) {
+			empAct = empleadosDisp.get(i);
 			empAct.setListaAsignacion(this.creaLAEmpleado(empAct));
 		}
-		for (i=0;i<this.empleadores.size();i++) {
-			emprAct = empleadores.get(i);
+		for (i=0;i<this.empleadoresDisp.size();i++) {
+			emprAct = empleadoresDisp.get(i);
 			emprAct.setListaAsignacion(this.creaLAEmpleadores(emprAct));
 		}
 		this.actualizaPuntajes();
 	}
 	
+	private void cargaDisponibles() {
+		for (Empleado empleadoAct : this.empleados) {
+			if (empleadoAct.getTicket() != null && empleadoAct.getTicket().getEstado().equalsIgnoreCase("Activo"))
+				this.empleadosDisp.add(empleadoAct);
+		}
+		for (Empleador empleadorAct : this.empleadores) {
+			if (!empleadorAct.getTickets().isEmpty()) {			// borra todos los tickets no activos 
+				for (TicketEmpleado ticketAct : empleadorAct.getTickets()) {
+					if (!ticketAct.getEstado().equalsIgnoreCase("Activo"))
+						empleadorAct.getTickets().remove(ticketAct);
+				}
+				if (!empleadorAct.getTickets().isEmpty())
+					this.empleadoresDisp.add(empleadorAct);
+			}
+		}
+	}
+
 	private void actualizaPuntajes() {
 		int i;
 		Empleado empAct;
 		Empleador emprAct;
-		for (i=0;i<this.empleados.size();i++) {
-			empAct = empleados.get(i);
+		for (i=0;i<this.empleadosDisp.size();i++) {
+			empAct = empleadosDisp.get(i);
 			try {
 				empAct.getListaAsignacion().getUsuarios().first().getUsuario().incrPuntajeApp(10);
 			} catch (NoSuchElementException e) {
 				System.out.println("No se puede actualizar puntaje porque no hay empleadores en la lista de asignacion de " + empAct.getUsername());
 			}
 		}
-		for (i=0;i<this.empleadores.size();i++) {
-			emprAct = empleadores.get(i);
+		for (i=0;i<this.empleadoresDisp.size();i++) {
+			emprAct = empleadoresDisp.get(i);
 			try {
 				emprAct.getListaAsignacion().getUsuarios().first().getUsuario().incrPuntajeApp(5);
 				emprAct.getListaAsignacion().getUsuarios().last().getUsuario().incrPuntajeApp(-5);
@@ -220,22 +246,22 @@ public class Agencia implements IAgencia {
 	public void iniciaRondaElecciones() {
 		Empleador empleadorElegido;
 		int i;
-		for (Empleado empleadoAct : this.empleados) {	// Carga hashmap con las elecciones de los empleados
+		for (Empleado empleadoAct : this.empleadosDisp) {	// Carga hashmap con las elecciones de los empleados
 			i = 0;
-			while (i<this.empleadores.size() && !this.empleadores.get(i).getTickets().contains(empleadoAct.getTicketElegido()))
+			while (i<this.empleadoresDisp.size() && !this.empleadoresDisp.get(i).getTickets().contains(empleadoAct.getTicketElegido()))
 				i++;
-			empleadorElegido = this.empleadores.get(i);
+			empleadorElegido = this.empleadoresDisp.get(i);
 			ElemRE elemAct = new ElemRE(empleadoAct,empleadorElegido,empleadorElegido.getTickets().indexOf(empleadoAct.getTicketElegido()));
 			this.eleccionesEmpleados.put(elemAct.getUsuarioActual().getUsername(), elemAct);
 		}
-		for (Empleador empleadorAct : this.empleadores) {	// Carga arraylist con las elecciones de los empleadores
+		for (Empleador empleadorAct : this.empleadoresDisp) {	// Carga arraylist con las elecciones de los empleadores
 			for (i=0;i<empleadorAct.getEmpleadosElegidos().size();i++) {
 				ElemRE elemAct = new ElemRE(empleadorAct,empleadorAct.getEmpleadosElegidos().get(i),empleadorAct.getTickets().indexOf(empleadorAct.getTicketsAsignados().get(i)));	// arraylists paralelos
 				this.eleccionesEmpleadores.add(elemAct);
 			}
 		}
 		boolean fueElegido = false;
-		for (Empleador empleadorAct : this.empleadores) {	// Se fija si algun empleador no fue elegido para penalizar su puntaje
+		for (Empleador empleadorAct : this.empleadoresDisp) {	// Se fija si algun empleador no fue elegido para penalizar su puntaje
 			for (Map.Entry<String,ElemRE> entry : this.eleccionesEmpleados.entrySet()) {
 				fueElegido = empleadorAct == entry.getValue().getUsuarioElegido();
 				if (fueElegido)
@@ -274,6 +300,8 @@ public class Agencia implements IAgencia {
 				this.fondos += this.calculaComision(contrato,eleccionEmpleado.getIndiceTicket());
 			}
 		}
+		this.empleadosDisp.removeAll(empleadosDisp);
+		this.empleadoresDisp.removeAll(empleadoresDisp);
 	}
 	
 	private boolean matcheoContratacion(TicketEmpleado ticketEmpleado,Empleado empleadoAct,Empleador empleadorAct,ElemRE eleccionEmpleado) {
