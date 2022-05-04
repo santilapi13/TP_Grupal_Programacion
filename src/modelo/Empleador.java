@@ -84,6 +84,7 @@ public class Empleador extends NoAdmin {
 		for (i=0;i<this.formularios.size();i++)
 			this.emiteFormulario(agencia,this.formularios.get(i),pesos.get(i));
 		this.formularios.clear();
+		this.pesos.clear();
 	}
 	
 	public void cancelaTicket(int i) {

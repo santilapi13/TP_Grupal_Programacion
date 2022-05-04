@@ -54,13 +54,13 @@ public class Formulario {
 		return this.cargaHr == f.getCargaHr() && this.locacion == f.getLocacion() && this.remuneracion == f.getRemuneracion() && this.puestoLaboral == f.getPuestoLaboral() && this.rangoEtario == f.getRangoEtario() && this.expPrevia == f.getExpPrevia() && this.estudios == f.getEstudios();
 	}
 
-	/*
+	
 	@Override
 	public String toString() {
 		return "locacion: " + locacion + ", remuneracion: " + remuneracion + ", cargaHr: " + cargaHr
 				+ ", puestoLaboral: " + puestoLaboral + ", rangoEtario: " + rangoEtario + ", expPrevia: " + expPrevia
 				+ ", estudios: " + estudios;
-	}*/
+	}
 	
 	
 	
