@@ -16,12 +16,8 @@ import datos.TipoPuesto;
 import excepciones.UsuarioRepetidoException;
 
 /**
- * @author USUARIO
- *
- */
-/**
- * @author USUARIO
- *
+ * @author grupo7
+ * Clase con todas las funcionalidades del sistema
  */
 public class Agencia implements IAgencia {
 	
