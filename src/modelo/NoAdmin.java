@@ -40,9 +40,12 @@ public abstract class NoAdmin extends Usuario implements IEmisor {
 		this.listaAsignacion = listaAsignacion;
 	}
 
+
 	@Override
 	public String toString() {
-		return ", puntajeApp: " + puntajeApp + ", comision a pagar: " + comisionAPagar;
+		return this.getUsername() + ", PuntajeApp: " + puntajeApp + ", ComisionAPagar: " + comisionAPagar;
 	}
+
+
 	
 }

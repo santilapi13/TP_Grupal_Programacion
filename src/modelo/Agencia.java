@@ -24,6 +24,7 @@ import excepciones.UsuarioRepetidoException;
  *
  */
 public class Agencia implements IAgencia {
+	
 	private double fondos;					// fondos representa la suma de las comisiones que deben cada usuario
 	private static Agencia instance = null;
 
@@ -58,6 +59,10 @@ public class Agencia implements IAgencia {
 		this.fondos = 0;
 	}
 	
+	/**
+	 * Metodo propio del patron Singleton que sirve para asegurarse que siempre exista una unica instancia de la clase Agencia.<br>
+	 * @return la unica Agencia que fue instanciada y en caso de nunca haber sido instanciada, crea una nueva Agencia.
+	 */
 	public static Agencia getInstance() {
 		if (instance == null)
 			instance = new Agencia();
@@ -175,13 +180,13 @@ public class Agencia implements IAgencia {
 	}
 	
 	/**
-	 * Crea una nueva Lista de Asignacion, ordenada segun puntaje de coincidencia, de los empleadores que mas coincidan con las preferencias del empleador pasado por parametro.<br>
-	 * <b>Pre</b>: empAct debe ser distinto de null y debe haber emitido un ticket (lo tiene como atributo).
-	 * <b>
+	 * Crea una nueva Lista de Asignacion, ordenada segun puntaje de coincidencia, de los empleadores que mas coincidan con las preferencias del empleado pasado por parametro.<br>
+	 * <b>Pre</b>: empAct debe ser distinto de null y debe haber emitido un ticket (lo tiene como atributo), cuyo estado debe ser activo.<br>
+	 * <b>Post</b>: la Lista de Asignacion se carga con las caracteristicas de los tickets de los empleadores que pueden interesarle al empleado, ordenados por puntaje.<br>
 	 * @param empAct : Empleado al cual se le generara su lista de asignacion a partir de todos los empleadores disponibles.<br>
 	 * @return Lista de Asignacion correspondiente al empleado pasado por parametro.
 	 */
-	private ListaAsignacion creaLAEmpleado(Empleado empAct) {	// Lista de asignacion de empleadores compatibles con el empleado
+	private ListaAsignacion creaLAEmpleado(Empleado empAct) {	
 		ListaAsignacion lista = new ListaAsignacion();
 		double puntajeAct;
 		for (Empleador empleadorAct : this.empleadoresDisp) {
@@ -194,7 +199,14 @@ public class Agencia implements IAgencia {
 		return lista;
 	}
 	
-	private ListaAsignacion creaLAEmpleadores(Empleador emprAct) {	// Lista de asignacion de empleados compatibles con el empleador
+	/**
+	 * Crea una nueva Lista de Asignacion, ordenada segun puntaje de coincidencia, de los empleados que mas coincidan con las preferencias del empleador pasado por parametro.<br>
+	 * <b>Pre</b>: emprAct debe ser distinto de null y debe haber emitido al menos un ticket cuyo estado es activo.<br>
+	 * <b>Post</b>: la Lista de Asignacion se carga con las caracteristicas de los tickets de los empleados que pueden interesarle al empleador, ordenados por puntaje.<br>
+	 * @param emprAct : Empleador al cual se le generara su lista de asignacion a partir de todos los empleadores disponibles.<br>
+	 * @return Lista de Asignacion correspondiente al empleador pasado por parametro.
+	 */
+	private ListaAsignacion creaLAEmpleadores(Empleador emprAct) {	
 		ListaAsignacion lista = new ListaAsignacion();
 		double puntajeAct;
 		for (Empleado empleadoAct : this.empleadosDisp) {
@@ -207,6 +219,12 @@ public class Agencia implements IAgencia {
 		return lista;
 	}
 	
+	/**
+	 * Primero, llama a cargar una lista de empelados y otra de empleadores validadas. Luego, recorre estas nuevas listas para crear una nueva 
+	 * Lista de Asignacion para cada Usuario con estas características.<br>
+	 * <b>Pre</b>: Debe existir al menos un empleado y un empleador para iniciar la ronda.<br>
+	 * <b>Post</b>: Cada usuario tendra su lista de asignacion correspondiente su/sus tickets.<br>
+	 */
 	public void iniciaRondaEncuentros() {
 		int i;
 		Empleado empAct;
@@ -220,9 +238,15 @@ public class Agencia implements IAgencia {
 			emprAct = empleadoresDisp.get(i);
 			emprAct.setListaAsignacion(this.creaLAEmpleadores(emprAct));
 		}
-		this.actualizaPuntajes();
 	}
 	
+	
+	/**
+	 * Carga a partir de las listas de empleados y empleadores, una nueva lista con los empleados que hayan emitido un ticket que siga activo
+	 * y otra con los empleadores que hayan emitido al menos un ticket cuyo estado sea activo. De esta forma se evitan hacer validaciones en
+	 * metodos posteriores.<br>
+	 * <b>Post</b>: Se borraran los tickets inactivos de los empleadores y se cargaran las listas EmpleadosDisp y EmpleadoresDisp con aquellos que tengan al menos un ticket activo.<br>
+	 */
 	private void cargaDisponibles() {
 		for (Empleado empleadoAct : this.empleados) {
 			if (empleadoAct.getTicket() != null && empleadoAct.getTicket().getEstado().equalsIgnoreCase("Activo"))
@@ -239,7 +263,15 @@ public class Agencia implements IAgencia {
 			}
 		}
 	}
-
+	
+	/**
+	 * Actualiza los puntajes de la aplicacion de cada usuario partcipe de la ronda de encuentros. Se comprueban las siguientes caracteristicas:<br>
+	 * - Por cada Lista de Asignacion de un empleado en la que un empleador se ubique primero, se le suma 10 puntos.<br>
+	 * - Por cada Lista de Asignacion de un empleador en la que un empleado se ubique ultimo, se le suma 5 puntos a este empleado.<br>
+	 * - Por cada Lista de Asignacion de un empleador en la que un empleado se ubique ultimo, se le resta 5 puntos a ese empleado. <br>
+	 * - Si un empleador no fue elegido por ningun empleado, se le resta 20 puntos.<br>
+	 * <b>Post</b>: Se modificara el puntaje de cada usuario en base a su posicion en las listas de asignacion de los demas.<br>
+	 */
 	private void actualizaPuntajes() {
 		int i;
 		Empleado empAct;
@@ -261,11 +293,32 @@ public class Agencia implements IAgencia {
 				System.out.println("No se puede actualizar puntaje porque no hay empleados en la lista de asignacion de " + emprAct.getUsername());
 			}
 		}
+		boolean fueElegido = false;
+		for (Empleador empleadorAct : this.empleadoresDisp) {	// Se fija si algun empleador no fue elegido para penalizar su puntaje
+			for (Map.Entry<String,ElemRE> entry : this.eleccionesEmpleados.entrySet()) {
+				fueElegido = empleadorAct == entry.getValue().getUsuarioElegido();
+				if (fueElegido)
+					break;
+			}
+			if (!fueElegido)
+				empleadorAct.incrPuntajeApp(-20);
+		}
 	}
 	
+	/**
+	 * La ronda de elecciones se hace luego de que, despues de un plazo de tiempo anunciado por la agencia, cada usuario hizo su eleccion.
+	 * Los empleados que no realizaron su eleccion se retiran de la lista EmpleadosDisp.
+	 * Despues, se cargan dos estructuras de datos. Un HashMap con las elecciones de los empleados, cuyos elementos tienen por clave el
+	 * username del empleado y por valor un objeto ElemRE (Elemento de Ronda de Eleccion) que tiene al usuario que realizo la eleccion,
+	 * al usuario elegido, y el indice del ticket del empleador (porque los empleadores tienen un ArrayList de tickets). Luego, se carga 
+	 * un nuevo ArrayList con las elecciones de los empleadores, cuyos elementos son objetos ElemRE. Finalmente se actualizan los puntajes.<br>
+	 * <b>Pre</b>: Los usuarios tienen en sus atributos las elecciones que hicieron (en caso de que un empleado no la haya realizado, tiene null)<br>
+	 * <b>Post</b>: Se cargan correctamente las estructuras con las elecciones de cada usuario, preparando todo para la ronda de contratacion<br>
+	 */
 	public void iniciaRondaElecciones() {
 		Empleador empleadorElegido;
 		int i;
+		this.depuraElecciones();
 		for (Empleado empleadoAct : this.empleadosDisp) {	// Carga hashmap con las elecciones de los empleados
 			i = 0;
 			while (i<this.empleadoresDisp.size() && !this.empleadoresDisp.get(i).getTickets().contains(empleadoAct.getTicketElegido()))
@@ -280,18 +333,29 @@ public class Agencia implements IAgencia {
 				this.eleccionesEmpleadores.add(elemAct);
 			}
 		}
-		boolean fueElegido = false;
-		for (Empleador empleadorAct : this.empleadoresDisp) {	// Se fija si algun empleador no fue elegido para penalizar su puntaje
-			for (Map.Entry<String,ElemRE> entry : this.eleccionesEmpleados.entrySet()) {
-				fueElegido = empleadorAct == entry.getValue().getUsuarioElegido();
-				if (fueElegido)
-					break;
-			}
-			if (!fueElegido)
-				empleadorAct.incrPuntajeApp(-20);
+		this.actualizaPuntajes();
+	}
+	
+	/**
+	 * Borra de la lista empleadosDisp a todos los empleados que no hayan realizado una eleccion, ya que traeria problemas en la ronda de contratacion.
+	 */
+	public void depuraElecciones()  {
+		for (Empleado empleadoAct : this.empleadosDisp) {
+			if (empleadoAct.getTicketElegido() == null)
+				this.empleadosDisp.remove(empleadoAct);
 		}
 	}
 	
+	/**
+	 * Se controlan las coincidencias entre las elecciones de empleados y empleadores, de forma tal que si coinciden se realiza un contrato, sus
+	 * correspondientes tickets se dan por finalizados y se actualizan los puntajes de la aplicacion de cada usuario en cada caso. Este control
+	 * de coincidencias se realiza recorriendo la lista de elecciones de los empleadores y buscando el username del empleado elegido en el HashMap
+	 * cuyas claves son los usernames de los empleados que realizaron la eleccion. Se verifica que el ticket del empleado no se haya finalizado y que
+	 * si hay dos tickets para el mismo trabajo (igual formulario), tambien se tenga en cuenta.Luego se comprueba que se cumplan todas las condiciones 
+	 * para que pueda instanciarse el contrato.<br>
+	 *<b>Pre</b>: Cada empleado debe haber realizado su eleccion.<br>
+	 * <b>Post</b>: Se realizaran los contratos empleado-empleador, actualizando estados de tickets y puntajes en cada caso. Las listas de empleadosDisp y empleadoresDisp seran vaciadas.<br>
+	 */
 	public void iniciaRondaContrataciones() {
 		ElemRE eleccionEmpleado;
 		Empleador empleadorAct;
@@ -301,33 +365,53 @@ public class Agencia implements IAgencia {
 		int i;
 		for (ElemRE eleccionEmpleador : this.eleccionesEmpleadores) {
 			eleccionEmpleado = this.eleccionesEmpleados.get(eleccionEmpleador.getUsuarioElegido().getUsername());
-			empleadorAct = (Empleador) eleccionEmpleador.getUsuarioActual();
-			empleadoAct = (Empleado) eleccionEmpleado.getUsuarioActual();
-			i = eleccionEmpleador.getIndiceTicket();
-			ticketEmpleado = empleadorAct.getTickets().get(i);
-			while (i < empleadorAct.getTickets().size() && empleadorAct.getTickets().get(i).getEstado().equalsIgnoreCase("finalizado") && ticketEmpleado.equals(empleadorAct.getTickets().get(i))) {
-				i++;
-			}
-			ticketEmpleado = empleadorAct.getTickets().get(i);
-			if (this.matcheoContratacion(ticketEmpleado,empleadoAct,empleadorAct,eleccionEmpleado)) {
-				contrato = new Contrato(empleadoAct,empleadorAct);
-				this.contratos.add(contrato);
-				ticketEmpleado.setEstado("finalizado");
-				empleadorAct.incrPuntajeApp(5);			// Redefinimos que en vez de 50, como 1 ticket equivale a 1 empleado contratado, se sume solo 5
-				empleadoAct.getTicket().setEstado("finalizado");
-				empleadoAct.getTicket().setResultado("exito");
-				empleadoAct.incrPuntajeApp(10);
-				this.fondos += this.calculaComision(contrato,eleccionEmpleado.getIndiceTicket());
+			if (eleccionEmpleado != null) {				// Si es null es porque ese empleado nunca hizo su eleccion
+				empleadorAct = (Empleador) eleccionEmpleador.getUsuarioActual();
+				empleadoAct = (Empleado) eleccionEmpleado.getUsuarioActual();
+				i = eleccionEmpleador.getIndiceTicket();
+				ticketEmpleado = empleadorAct.getTickets().get(i);
+				while (i < empleadorAct.getTickets().size() && empleadorAct.getTickets().get(i).getEstado().equalsIgnoreCase("finalizado") && ticketEmpleado.equals(empleadorAct.getTickets().get(i))) {
+					i++;
+				}
+				ticketEmpleado = empleadorAct.getTickets().get(i);
+				if (this.matcheoContratacion(ticketEmpleado,empleadoAct,empleadorAct,eleccionEmpleado)) {
+					contrato = new Contrato(empleadoAct,empleadorAct);
+					this.contratos.add(contrato);
+					ticketEmpleado.setEstado("finalizado");
+					empleadorAct.incrPuntajeApp(5);			// Redefinimos que en vez de 50, como 1 ticket equivale a 1 empleado contratado, se sume solo 5
+					empleadoAct.getTicket().setEstado("finalizado");
+					empleadoAct.getTicket().setResultado("exito");
+					empleadoAct.incrPuntajeApp(10);
+					this.fondos += this.calculaComision(contrato,eleccionEmpleado.getIndiceTicket());
+				}
 			}
 		}
 		this.empleadosDisp.removeAll(empleadosDisp);
 		this.empleadoresDisp.removeAll(empleadoresDisp);
 	}
 	
+	/**
+	 * Retornara true si los tickets emitidos por el empleador y el empleado estan activos (no finalizado), si el empleador elegido por el empleado
+	 * es el empleador actual y si, ademas, ambos se eligieron entre si para el mismo trabajo (ticket).<br> 
+	 * <b>Pre</b>: Todos los parametros deben ser distintos de null.<br>
+	 * <b>Post</b>: La salida representara si hay o no coincidencia.<br>
+	 * @param ticketEmpleado: Ticket de busqueda de un empleado emitido por un empleador.
+	 * @param empleadoAct: Empleado elegido por el empleador y que se busca saber si este tambien lo eligio para el mismo trabajo.
+	 * @param empleadorAct: Empleador que realizo la eleccion del empleadoAct.
+	 * @param eleccionEmpleado: ElemRE con la informacion de la eleccion del empleado.
+	 * @return booleano con la respuesta de si hay coincidencia y debe realizarse el contrato o no.
+	 */
 	private boolean matcheoContratacion(TicketEmpleado ticketEmpleado,Empleado empleadoAct,Empleador empleadorAct,ElemRE eleccionEmpleado) {
 		return ticketEmpleado.getEstado().equalsIgnoreCase("activo") && empleadoAct.getTicket().getEstado().equalsIgnoreCase("activo") && empleadorAct == eleccionEmpleado.getUsuarioElegido() && ticketEmpleado.equals(empleadorAct.getTickets().get(eleccionEmpleado.getIndiceTicket()));
 	}
 	
+	/**
+	 * Delega el calculo de la tasa de comision correspondiente al Empleado y al Empleador del contrato a la clase Comisiones, para luego
+	 * calcular la comision de cada uno como el producto entre la tasa y un sueldo fijo (que depende de los rangos de remuneracion acordados).
+	 * @param contrato: Contrato entre un Empleado y un Empleador en base a los cuales se calculara la comision.
+	 * @param i: Indice del ticket (en el arraylist) de empleado emitido por el empleador del contrato.
+	 * @return La suma de las comisiones del empleado y del empleador.
+	 */
 	private double calculaComision(Contrato contrato,int i) {		// El porcentaje se calcula sobre valores fijos en base a los rangos de remuneracion establecidos en su formulario
 		Empleador empleador = contrato.getEmpleador();
 		Empleado empleado = contrato.getEmpleado();

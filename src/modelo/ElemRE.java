@@ -31,7 +31,7 @@ public class ElemRE {
 
 	@Override
 	public String toString() {
-		return usuarioActual + "\teligio a\t" + usuarioElegido + ", indiceTicket: " + indiceTicket;
+		return usuarioActual + "  eligio a  " + usuarioElegido + " (IndiceTicket: " + indiceTicket + ")";
 	}
 
 	

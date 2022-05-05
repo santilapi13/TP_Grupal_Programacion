@@ -64,7 +64,7 @@ public class Prueba {
 			for (ElemLA l : er2.getListaAsignacion().getUsuarios())
 				System.out.println(l);
 			
-			e1.setTicketElegido((TicketEmpleado) e1.getListaAsignacion().getUsuarios().first().getTicket());
+			//e1.setTicketElegido((TicketEmpleado) e1.getListaAsignacion().getUsuarios().first().getTicket());
 			e2.setTicketElegido((TicketEmpleado) e2.getListaAsignacion().getUsuarios().first().getTicket());
 			er1.eligeEmpleado(e1,er1.getTickets().get(0));
 			er1.eligeEmpleado(e2,er1.getTickets().get(1));
@@ -75,7 +75,7 @@ public class Prueba {
 				System.out.println(eleccionEmpleador);
 			System.out.println("\nELECCIONES EMPLEADOS");
 			for (Map.Entry<String,ElemRE> entry : agencia.getEleccionesEmpleados().entrySet()) {	// Muestra elecciones de empleados
-				System.out.println(entry.getKey() + ", " + entry.getValue());
+				System.out.println(entry.getValue());
 			}
 			
 			a1.iniciaRondaContrataciones();
@@ -83,8 +83,13 @@ public class Prueba {
 			for (Contrato contratoAct : agencia.getContratos())
 				System.out.println(contratoAct);
 			
-			System.out.println("\nComision a cobrar por la agencia: $" + agencia.getFondos());
+			System.out.println("\nComision a cobrar por la agencia: $" + agencia.getFondos()) ;
 			
+			System.out.println("\nESTADOS FINALES");
+			System.out.println(e1);
+			System.out.println(e2);
+			System.out.println(er1);
+			System.out.println(er2);
 			
 		} catch (NullPointerException e) {
 			System.out.println("Debe existir al menos un usuario de cada tipo para iniciar la ronda de encuentros.");
