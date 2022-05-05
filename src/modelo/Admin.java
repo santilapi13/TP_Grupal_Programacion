@@ -1,4 +1,10 @@
 package modelo;
+/** 
+* @author Grupo 7
+ * <br> 
+* Clase que sirve para representar a los usuarios que tienen más acceso a los métodos del sistema. <br>
+ * Todos sus métodos delegan la funcionalidad a la agencia.
+*/
 
 import java.util.ArrayList;
 
