@@ -25,6 +25,14 @@ public class ListaAsignacion {
 		return usuarios;
 	}
 	
+	/**
+	 * Determina si un ticket idéntico (el mismo valor en todos los campos) ya se encuentra en la lista de asignación de cierto usuario. Esto se realiza para luego no agregar tickets repetidos.<br>
+	 * <b>Pre</b>: ticket y usuario deben ser distinto de null.
+	 * <b>Post</b>: se verificó si el ticket está en la lista de asignación correctamente. Se retornó true o false<br>
+	 * @param ticket : ticket del cual se busca determinar si ya se encuentra en la lista de asignación.
+	 * @param usuario : usuario del cual se aalizará su lista de asignación.
+	 * @return true: si el ticket se encuentra en el la lista de asignación. false: si el ticket no está en la lista de asignación.
+	 */
 	public boolean ticketRepetido(Ticket ticket, NoAdmin usuario) {
 		boolean esta = false;
 		ElemLA elemAct;
