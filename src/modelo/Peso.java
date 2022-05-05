@@ -87,6 +87,14 @@ public class Peso {
 				+ ", EstudiosCursados: " + estudiosCursados;
 	}
 
+	/**
+	*Sobreescribe el método equals, para comparar cada atributo específico de los objetos Peso
+	*<br>
+	*@return boolean que indica si los objetos de tipo Peso poseen mismos atributos(true) o no(false).
+	*/
+
+	
+	
 	@Override
 	public boolean equals(Object obj) {
 		Peso p = (Peso) obj;

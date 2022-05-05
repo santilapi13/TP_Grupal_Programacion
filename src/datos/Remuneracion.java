@@ -7,6 +7,9 @@ public class Remuneracion extends Aspecto {
 	private static Remuneracion instance= null;
 	private double [][] matriz = {{1,-0.5,-1},{1,1,-0.5}, {1,1,1}};
 
+	/**
+	* Constructor privado debido a la implementación del patrón SINGLETON al calcular los puntajes.
+	*/
 	private Remuneracion() {
 	}
 

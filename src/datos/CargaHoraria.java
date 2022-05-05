@@ -7,6 +7,10 @@ public class CargaHoraria extends Aspecto {
 	private static CargaHoraria instance= null;
 	private double [][] matriz = {{1,-0.5,-1},{-0.5,1,-0.5}, {-1,0.5,1}};
 
+	/**
+	* Constructor privado debido a la implementación del patrón SINGLETON al calcular los puntajes.
+	*/
+
 	private CargaHoraria() {
 	}
 

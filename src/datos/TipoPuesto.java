@@ -7,6 +7,9 @@ public class TipoPuesto extends Aspecto {
 	private static TipoPuesto instance= null;
 	private double [][] matriz = {{1,-0.5,-1},{-0.5,1,-0.5}, {-1,0.5,1}};
 
+	/**
+	* Constructor privado debido a la implementación del patrón SINGLETON al calcular los puntajes.
+	*/
 	private TipoPuesto() {
 	}
 
