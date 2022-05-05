@@ -57,7 +57,7 @@ public abstract class Ticket {
 
 	@Override
 	public String toString() {
-		return "fecha: " + fecha.getTime() + ", estado: " + estado + "\npeso: " + peso;
+		return "fecha: " + fecha.getTime() + ", estado: " + estado;
 	}
 
 	/**

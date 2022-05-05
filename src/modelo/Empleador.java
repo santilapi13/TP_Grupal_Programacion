@@ -1,8 +1,8 @@
 package modelo;
+
 /** 
 * @author Grupo 7
 */
-
 import java.util.ArrayList;
 
 public class Empleador extends NoAdmin {

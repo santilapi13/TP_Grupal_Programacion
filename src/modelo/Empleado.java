@@ -1,8 +1,8 @@
 package modelo;
+
 /** 
 * @author Grupo 7
 */
-
 public class Empleado extends NoAdmin {
 	private String nya;
 	private String telefono;

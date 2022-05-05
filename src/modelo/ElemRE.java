@@ -44,7 +44,7 @@ public class ElemRE {
 
 	@Override
 	public String toString() {
-		return usuarioActual + "  eligio a  " + usuarioElegido + " (IndiceTicket: " + indiceTicket + ")";
+		return usuarioActual.getUsername() + ", puntaje: " + usuarioActual.getPuntajeApp() + "  eligio a  " + usuarioElegido.getUsername()+ ", puntaje: " + usuarioElegido.getPuntajeApp();
 	}
 
 	

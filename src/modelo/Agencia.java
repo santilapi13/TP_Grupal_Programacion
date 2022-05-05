@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import datos.Comisiones;
 import datos.CargaHoraria;
+import datos.Comisiones;
 import datos.EstudiosCursados;
 import datos.ExpPrevia;
 import datos.Locacion;
@@ -14,9 +14,10 @@ import datos.RangoEtario;
 import datos.Remuneracion;
 import datos.TipoPuesto;
 import excepciones.UsuarioRepetidoException;
+import excepciones.UsuariosInsuficientesException;
 
 /**
- * @author grupo7
+ * @author Grupo 7<br>
  * Clase con todas las funcionalidades del sistema
  */
 public class Agencia implements IAgencia {
@@ -218,13 +219,15 @@ public class Agencia implements IAgencia {
 	/**
 	 * Primero, llama a cargar una lista de empelados y otra de empleadores validadas. Luego, recorre estas nuevas listas para crear una nueva 
 	 * Lista de Asignacion para cada Usuario con estas características.<br>
-	 * <b>Pre</b>: Debe existir al menos un empleado y un empleador para iniciar la ronda.<br>
 	 * <b>Post</b>: Cada usuario tendra su lista de asignacion correspondiente su/sus tickets.<br>
+	 * @throws UsuariosInsuficientesException 
 	 */
-	public void iniciaRondaEncuentros() {
+	public void iniciaRondaEncuentros() throws UsuariosInsuficientesException {
 		int i;
 		Empleado empAct;
 		Empleador emprAct;
+		if (this.empleados.isEmpty() || this.empleadores.isEmpty())
+			throw new UsuariosInsuficientesException("Debe existir al menos un empleado y un empleador para iniciar la ronda");
 		this.cargaDisponibles();
 		for (i=0;i<this.empleadosDisp.size();i++) {
 			empAct = empleadosDisp.get(i);
@@ -241,6 +244,7 @@ public class Agencia implements IAgencia {
 	 * Carga a partir de las listas de empleados y empleadores, una nueva lista con los empleados que hayan emitido un ticket que siga activo
 	 * y otra con los empleadores que hayan emitido al menos un ticket cuyo estado sea activo. De esta forma se evitan hacer validaciones en
 	 * metodos posteriores.<br>
+	 * <b>Pre</b>: Debe existir al menos un empleado y un empleador para iniciar la ronda.<br>
 	 * <b>Post</b>: Se borraran los tickets inactivos de los empleadores y se cargaran las listas EmpleadosDisp y EmpleadoresDisp con aquellos que tengan al menos un ticket activo.<br>
 	 */
 	private void cargaDisponibles() {
@@ -263,7 +267,7 @@ public class Agencia implements IAgencia {
 	/**
 	 * Actualiza los puntajes de la aplicacion de cada usuario partcipe de la ronda de encuentros. Se comprueban las siguientes caracteristicas:<br>
 	 * - Por cada Lista de Asignacion de un empleado en la que un empleador se ubique primero, se le suma 10 puntos.<br>
-	 * - Por cada Lista de Asignacion de un empleador en la que un empleado se ubique ultimo, se le suma 5 puntos a este empleado.<br>
+	 * - Por cada Lista de Asignacion de un empleador en la que un empleado se ubique primero, se le suma 5 puntos a este empleado.<br>
 	 * - Por cada Lista de Asignacion de un empleador en la que un empleado se ubique ultimo, se le resta 5 puntos a ese empleado. <br>
 	 * - Si un empleador no fue elegido por ningun empleado, se le resta 20 puntos.<br>
 	 * <b>Post</b>: Se modificara el puntaje de cada usuario en base a su posicion en las listas de asignacion de los demas.<br>
@@ -277,7 +281,6 @@ public class Agencia implements IAgencia {
 			try {
 				empAct.getListaAsignacion().getUsuarios().first().getUsuario().incrPuntajeApp(10);
 			} catch (NoSuchElementException e) {
-				System.out.println("No se puede actualizar puntaje porque no hay empleadores en la lista de asignacion de " + empAct.getUsername());
 			}
 		}
 		for (i=0;i<this.empleadoresDisp.size();i++) {
@@ -286,7 +289,6 @@ public class Agencia implements IAgencia {
 				emprAct.getListaAsignacion().getUsuarios().first().getUsuario().incrPuntajeApp(5);
 				emprAct.getListaAsignacion().getUsuarios().last().getUsuario().incrPuntajeApp(-5);
 			} catch(NoSuchElementException e) {
-				System.out.println("No se puede actualizar puntaje porque no hay empleados en la lista de asignacion de " + emprAct.getUsername());
 			}
 		}
 		boolean fueElegido = false;
@@ -336,7 +338,10 @@ public class Agencia implements IAgencia {
 	 * Borra de la lista empleadosDisp a todos los empleados que no hayan realizado una eleccion, ya que traeria problemas en la ronda de contratacion.
 	 */
 	public void depuraElecciones()  {
-		for (Empleado empleadoAct : this.empleadosDisp) {
+		Empleado empleadoAct;
+		int N = this.empleadosDisp.size();
+		for (int i=0;i<N;i++) {
+			empleadoAct = this.empleadosDisp.get(i);
 			if (empleadoAct.getTicketElegido() == null)
 				this.empleadosDisp.remove(empleadoAct);
 		}
